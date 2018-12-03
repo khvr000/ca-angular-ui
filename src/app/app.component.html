@@ -5,3 +5,9 @@
 
 <input type="text" placeholder="set search term" [(ngModel)]="term" required>
   <button (click)="setSearchKeyWord(term)">Search</button>
+
+
+  <div>
+    <input type="text" placeholder="set search term" [(ngModel)]="newterm" required>
+    <button (click)="testPostCall(newterm)">test post call</button>
+  </div>

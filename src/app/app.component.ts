@@ -9,6 +9,7 @@ import {AppService} from './app.service';
 export class AppComponent {
   title = 'ci-angular-ui';
   term;
+  newterm;
   responseJobId: string;
 
   constructor (private appService: AppService) {}
@@ -18,4 +19,15 @@ export class AppComponent {
       this.responseJobId = res['body'];
     });
   }
+
+    testPostCall(keyword: string) {
+        console.log('pst Call called ');
+        this.appService.testPostMethod(keyword).subscribe(res => {
+          console.log('Success00000');
+        });
+
+    }
+
+
+
 }
