@@ -1,10 +1,14 @@
 import { Component } from '@angular/core';
 import {AppService} from './app.service';
+// import {FORM_PROVIDERS, FORM_DIRECTIVES} from 'angular2/common';
+
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  // providers: [FORM_PROVIDERS],
+  // directives: [FORM_DIRECTIVES]
 })
 export class AppComponent {
   title = 'ci-angular-ui';
@@ -20,13 +24,6 @@ export class AppComponent {
     });
   }
 
-    testPostCall(keyword: string) {
-        console.log('pst Call called ');
-        this.appService.testPostMethod(keyword).subscribe(res => {
-          console.log('Success00000');
-        });
-
-    }
 
 
 

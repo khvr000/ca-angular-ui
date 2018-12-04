@@ -1,13 +1,17 @@
 
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-
-<input type="text" placeholder="set search term" [(ngModel)]="term" required>
-  <button (click)="setSearchKeyWord(term)">Search</button>
 
 
-  <div>
-    <input type="text" placeholder="set search term" [(ngModel)]="newterm" required>
-    <button (click)="testPostCall(newterm)">test post call</button>
+
+  <!-- main app container -->
+  <div class="jumbotron">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-6 offset-sm-3">
+          <alert></alert>
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+    </div>
   </div>
+
+
