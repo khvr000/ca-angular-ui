@@ -6,6 +6,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import {UserService} from '../_services/user.service';
 import {AlertService} from '../_services/alert.service';
+import {RegisterService} from '../_services/register.service';
+import {RegisterUser} from '../_models/registerUser';
 
 
 
@@ -25,7 +27,8 @@ export class RegisterComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private userService: UserService,
-    private alertService: AlertService) { }
+    private alertService: AlertService,
+    private registerService: RegisterService) { }
 
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
@@ -48,17 +51,24 @@ export class RegisterComponent implements OnInit {
     }
 
     this.loading = true;
-    this.userService.register(this.registerForm.value)
-      .pipe(first())
-      .subscribe(
-        data => {
-          this.alertService.success('Registration successful', true);
-          this.router.navigate(['/login']);
-        },
-        error => {
-          this.alertService.error(error);
-          this.loading = false;
-        });
+    const registerModel = {
+      'first_name': this.registerForm.value.firstName,
+      'username': this.registerForm.value.username,
+      'last_name': this.registerForm.value.lastName,
+      'password': this.registerForm.value.password
+    }
+    this.registerService.registerAnUser(registerModel).subscribe(res => {
+      console.log(res);
+      if (res === 'REGISTERED') {
+              this.alertService.success('Registration successful', true);
+              this.router.navigate(['/login']);
+      } else if (res['errorMessage'] === 'The conditional request failed') {
+        this.loading = false;
+        this.alertService.error('User Already Exits');
+      }
+    }, error => {
+      this.alertService.error(error);
+    });
   }
 }
 

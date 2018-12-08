@@ -18,6 +18,9 @@ import {UserService} from './_services/user.service';
 import {AlertService} from './_services/alert.service';
 import {AuthenticationService} from './_services/authentication.service';
 import {ErrorInterceptor, fakeBackendProvider, JwtInterceptor} from './_helpers';
+import {RegisterService} from './_services/register.service';
+import {LoginService} from './_services/login.service';
+import {SharedProperties} from './_services/sharedProperties';
 
 @NgModule({
   imports: [
@@ -39,6 +42,9 @@ import {ErrorInterceptor, fakeBackendProvider, JwtInterceptor} from './_helpers'
     AlertService,
     AuthenticationService,
     UserService,
+    RegisterService,
+    LoginService,
+    SharedProperties,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
 

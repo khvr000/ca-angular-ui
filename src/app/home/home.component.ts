@@ -4,6 +4,7 @@ import { first } from 'rxjs/operators';
 import { User } from '../_models/user';
 import { UserService } from '../_services/user.service';
 import {AppService} from '../app.service';
+import {SharedProperties} from '../_services/sharedProperties';
 
 @Component({templateUrl: 'home.component.html'})
 export class HomeComponent implements OnInit {
@@ -12,11 +13,13 @@ export class HomeComponent implements OnInit {
 
   title = 'ci-angular-ui';
   term;
+  userDetails: any;
   newterm;
   responseJobId: string;
 
   constructor (private appService: AppService,
-               private userService: UserService) {
+               private userService: UserService,
+               private sharedPropertied: SharedProperties) {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }
 
@@ -28,18 +31,7 @@ export class HomeComponent implements OnInit {
 
 
   ngOnInit() {
-    this.loadAllUsers();
+    this.userDetails = this.sharedPropertied.getUserDetails();
   }
 
-  deleteUser(id: number) {
-    this.userService.delete(id).pipe(first()).subscribe(() => {
-      this.loadAllUsers()
-    });
-  }
-
-  private loadAllUsers() {
-    this.userService.getAll().pipe(first()).subscribe(users => {
-      this.users = users;
-    });
-  }
 }

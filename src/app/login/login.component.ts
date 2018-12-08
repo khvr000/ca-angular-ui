@@ -4,6 +4,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import {AlertService} from '../_services/alert.service';
 import {AuthenticationService} from '../_services/authentication.service';
+import {LoginService} from '../_services/login.service';
+import {LoginModel} from '../_models/loginModel';
+import {error} from 'util';
+import {SharedProperties} from '../_services/sharedProperties';
 
 
 @Component({
@@ -22,7 +26,9 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private authenticationService: AuthenticationService,
-    private alertService: AlertService) {}
+    private alertService: AlertService,
+    private loginService: LoginService,
+    private sharedProperties: SharedProperties) {}
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
@@ -49,15 +55,34 @@ export class LoginComponent implements OnInit {
     }
 
     this.loading = true;
-    this.authenticationService.login(this.f.username.value, this.f.password.value)
-      .pipe(first())
-      .subscribe(
-        data => {
-          this.router.navigate([this.returnUrl]);
-        },
-        error => {
-          this.alertService.error(error);
-          this.loading = false;
-        });
+    const loginModel  = {
+      'username': this.loginForm.value.username,
+      'password': this.loginForm.value.password
+    };
+   this.loginService.loginCheck(loginModel).subscribe(res => {
+         if (res['res'] === 'TRUE') {
+           this.loginService.isLoggedIn = true;
+           this.sharedProperties.setUserDetails(res['details']);
+           this.router.navigate([this.returnUrl]);
+         } else {
+           this.alertService.error('Please Check Username And Password');
+           this.loading = false;
+         }
+       },error => {
+           this.alertService.error(error);
+           this.loading = false;
+         });
+
+
+    // this.authenticationService.login(this.f.username.value, this.f.password.value)
+    //   .pipe(first())
+    //   .subscribe(
+    //     data => {
+    //       // this.router.navigate([this.returnUrl]);
+    //     },
+    //     error => {
+    //       this.alertService.error(error);
+    //       this.loading = false;
+    //     });
   }
 }
