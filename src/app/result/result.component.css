@@ -1,0 +1,62 @@
+/* ----- SIDE BAR ----*/
+
+aside {
+    background-color: #515F60;
+    float: left;
+    width: 200px;
+    text-align: center;
+    height: 400px;
+    /*overflow-y: scroll;*/
+}
+
+aside ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+aside ul li a {
+    text-decoration: none;
+    color: black;
+    display: block;
+    padding: 15px 25px;
+}
+
+
+aside ul li a:hover {
+    background-color: #1C2525;
+    color: white;
+}
+
+#hoverIcon a:hover{
+    /*color: ;*/
+}
+
+
+/* ---------- MAIN SECTION -----------*/
+
+section {
+    margin-left: 200px;
+    border-left: 2px solid grey;
+    padding: 10px;
+}
+
+
+details {
+    background-color: #636a46;
+    margin: 5px;
+    padding: 10px;
+    color: white;
+    border-radius: 50px;
+}
+
+article {
+    background-color: #b9bd89;
+    color: black;
+    padding: 10px;
+    border-radius: 50px;
+}
+
+summary {
+    outline: none;
+}

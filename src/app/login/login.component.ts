@@ -1,12 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { first } from 'rxjs/operators';
 import {AlertService} from '../_services/alert.service';
 import {AuthenticationService} from '../_services/authentication.service';
 import {LoginService} from '../_services/login.service';
-import {LoginModel} from '../_models/loginModel';
-import {error} from 'util';
 import {SharedProperties} from '../_services/sharedProperties';
 
 

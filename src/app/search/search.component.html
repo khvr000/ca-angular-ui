@@ -1,0 +1,45 @@
+<!-- Side bar section -->
+<aside>
+  <ul>
+    <li>
+      <a href="#">Smart Search</a>
+    </li>
+    <li>
+      <a href="#">Suggestions</a>
+    </li>
+    <li>
+      <a href="#">Clean up</a>
+    </li>
+
+  </ul>
+</aside>
+
+
+
+<!-- Main Content -->
+
+<h2 *ngIf="userDetails">Welcome {{userDetails.first_name}} {{userDetails.last_name}}</h2>
+<input type="text" placeholder="set search term" [(ngModel)]="term" required>
+<button class="tg-btn" (click)="setSearchKeyWord(term)">Search</button>
+
+
+
+
+<section>
+  <!-- HTML -->
+  <details>
+    <article>Your Job ID Generated is :</article>
+
+
+    <!--<article>-->
+      <!--<h3>HTML</h3>-->
+      <!--<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus itaque, praesentium. Est et minima-->
+        <!--molestias neque, nesciunt quod recusandae vel.</p>-->
+      <!--<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias aspernatur assumenda autem doloremque ex-->
+        <!--hic ipsum iste laboriosam, magnam nam nesciunt nisi nobis nostrum reiciendis rerum suscipit totam vero,-->
+        <!--voluptatibus.</p>-->
+    <!--</article>-->
+  </details>
+
+</section>
+

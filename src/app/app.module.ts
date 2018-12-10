@@ -21,6 +21,8 @@ import {ErrorInterceptor, fakeBackendProvider, JwtInterceptor} from './_helpers'
 import {RegisterService} from './_services/register.service';
 import {LoginService} from './_services/login.service';
 import {SharedProperties} from './_services/sharedProperties';
+import { ResultComponent } from './result/result.component';
+import { SearchComponent } from './search/search.component';
 
 @NgModule({
   imports: [
@@ -35,7 +37,9 @@ import {SharedProperties} from './_services/sharedProperties';
     AlertComponent,
     HomeComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    ResultComponent,
+    SearchComponent
   ],
   providers: [
     AuthGuard,
