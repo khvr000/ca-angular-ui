@@ -60,7 +60,7 @@ export class LoginComponent implements OnInit {
          if (res['res'] === 'TRUE') {
            this.loginService.isLoggedIn = true;
            this.sharedProperties.setUserDetails(res['details']);
-           this.router.navigate([this.returnUrl]);
+           this.router.navigate(['/home/search']);
          } else {
            this.alertService.error('Please Check Username And Password');
            this.loading = false;

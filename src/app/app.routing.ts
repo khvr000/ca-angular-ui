@@ -28,7 +28,7 @@ const appRoutes: Routes = [
     { path: 'register',component: RegisterComponent},
     { path: 'home',
       component: HomeComponent,
-      canActivate: [AuthGuard],
+      // canActivate: [AuthGuard],
       children: [
             { path: '', component: SearchComponent},
             { path: 'results', component: ResultComponent },

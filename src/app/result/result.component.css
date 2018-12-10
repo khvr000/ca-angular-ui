@@ -32,31 +32,13 @@ aside ul li a:hover {
     /*color: ;*/
 }
 
+/* ----- Main Body ---*/
 
-/* ---------- MAIN SECTION -----------*/
-
-section {
-    margin-left: 200px;
-    border-left: 2px solid grey;
-    padding: 10px;
+.pieCharts {
+    height: 360px;
+    float: left;
 }
 
-
-details {
-    background-color: #636a46;
-    margin: 5px;
-    padding: 10px;
-    color: white;
-    border-radius: 50px;
-}
-
-article {
-    background-color: #b9bd89;
-    color: black;
-    padding: 10px;
-    border-radius: 50px;
-}
-
-summary {
-    outline: none;
+#chartdiv1,#chartdiv2 {
+    height: 360px
 }

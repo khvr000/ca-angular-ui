@@ -23,6 +23,7 @@ import {LoginService} from './_services/login.service';
 import {SharedProperties} from './_services/sharedProperties';
 import { ResultComponent } from './result/result.component';
 import { SearchComponent } from './search/search.component';
+import {AmChartsModule} from "@amcharts/amcharts3-angular";
 
 @NgModule({
   imports: [
@@ -30,7 +31,8 @@ import { SearchComponent } from './search/search.component';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    AppRouting
+    AppRouting,
+    AmChartsModule
   ],
   declarations: [
     AppComponent,
