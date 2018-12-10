@@ -1,0 +1,65 @@
+<!-- Main Header -->
+<body>
+<!--<header>-->
+<!--<h1>Centement Analysis</h1>-->
+<!--</header>-->
+
+
+<!-- Small Top Bar -->
+<header id="help">
+    <span>Mine Your Opinion</span>
+</header>
+
+
+<!-- Main Navigation -->
+<nav>
+    <ul>
+        <li>
+            <h4 class="top_logo">
+                <span>Centement</span> Analysis</h4>
+        </li>
+    </ul>
+    <ul>
+        <li>
+            <a routerLink="/home/results">
+                <i class="fa fa-chart-bar ssiconsvg"></i>
+                <span>RESULTS</span>
+                <!--<svg class="ssiconsvg _reports" viewBox="0 0 16 16" style="width: auto;">-->
+                <!---->
+                <!--</svg>-->
+            </a>
+        </li>
+        <li>
+            <a routerLink="/home/search" class="active">
+                <i class="fas fa-search ssiconsvg"></i>
+                <span>SEARCH</span>
+            </a>
+        </li>
+        <li>
+            <a href="#">Frequency</a>
+        </li>
+        <li>
+            <a href="#">Blog</a>
+        </li>
+
+    </ul>
+    <ul>
+        <li>
+            <p><a [routerLink]="['/login']">Logout</a></p>
+        </li>
+    </ul>
+</nav>
+
+
+<router-outlet></router-outlet>
+
+
+<!-- Main Footer -->
+
+<footer>
+    <h3>CopyRight &copy; 2018, Centement Analysis </h3>
+    <p>All Rights Reserved</p>
+    <small>Developed & miantained by Team XXXXXXXX..</small>
+</footer>
+
+</body>

@@ -6,7 +6,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 // used to create fake backend
 
 import { AppComponent } from './app.component';
-import { routing } from './app.routing';
+import {AppRouting} from './app.routing';
 
 import { AlertComponent } from './_directives/alert.component';
 import { AuthGuard } from './_guards/auth.guard';
@@ -30,7 +30,7 @@ import { SearchComponent } from './search/search.component';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    routing
+    AppRouting
   ],
   declarations: [
     AppComponent,
