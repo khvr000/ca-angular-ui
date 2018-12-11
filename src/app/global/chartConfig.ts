@@ -24,8 +24,8 @@ export class CAChartConfig {
             'valueAxes': [],
             'labelsEnabled': false,
             'autoMargins': false,
-            'radius': '42%',
-            // 'innerRadius': '70%',
+            'radius': '28%',
+            'innerRadius': '60%',
             'legend': {
                 'marginRight': 0,
                 'marginLeft': 5,
@@ -39,6 +39,6 @@ export class CAChartConfig {
             },
             'colors': ['#00A5C8', '#2164B2', '#8BD3C7', '#5E5AC8', '#519F45', '#C8C8C5'],
         },
-    }
+    };
 
 }
