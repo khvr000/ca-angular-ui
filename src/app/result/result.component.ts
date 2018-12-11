@@ -13,6 +13,7 @@ export class ResultComponent implements OnInit {
    pieChart2: any;
    stockChart1: any;
    finalStockTestData = [];
+   finalStockTestData2 = [];
    chartData1 = [];
    chartData2 = [];
    chartData3 = [];
@@ -52,14 +53,6 @@ export class ResultComponent implements OnInit {
             sentiment: 'Mixed',
             value: 139,
             color: '#FF7F00'}];
-
-    stockChartDataSet1 = [{"date":"2018-12-04","Dec 04, 2018 - Dec 10, 2018":0,"Nov 27, 2018 - Dec 03, 2018":0},
-        {"date":"2018-12-05","Dec 04, 2018 - Dec 10, 2018":0,"Nov 27, 2018 - Dec 03, 2018":0},
-        {"date":"2018-12-06","Dec 04, 2018 - Dec 10, 2018":3959.54,"Nov 27, 2018 - Dec 03, 2018":0},
-        {"date":"2018-12-07","Dec 04, 2018 - Dec 10, 2018":0,"Nov 27, 2018 - Dec 03, 2018":5234376325.56},
-        {"date":"2018-12-08","Dec 04, 2018 - Dec 10, 2018":0,"Nov 27, 2018 - Dec 03, 2018":0},
-        {"date":"2018-12-09","Dec 04, 2018 - Dec 10, 2018":0,"Nov 27, 2018 - Dec 03, 2018":0},
-        {"date":"2018-12-10","Dec 04, 2018 - Dec 10, 2018":0,"Nov 27, 2018 - Dec 03, 2018":0}];
 
 
     pieChartConfig1 = {
@@ -139,19 +132,39 @@ export class ResultComponent implements OnInit {
                   toField: "value"
               }],
 
-              color: "#7f8da9",
+              color: "#00B333",
               dataProvider: this.finalStockTestData,
-              title: "West Stock",
+              title: "Positive",
               categoryField: "date"
           }, {
               fieldMappings: [{
                   fromField: "value2",
                   toField: "value"
               }],
-              color: "#fac314",
+              color: "#DA0000",
               dataProvider: this.finalStockTestData,
               compared: true,
-              title: "East Stock",
+              title: "Negative",
+              categoryField: "date"
+          }, {
+              fieldMappings: [{
+                  fromField: "value3",
+                  toField: "value"
+              }],
+              color: "#3563B6",
+              dataProvider: this.finalStockTestData,
+              compared: true,
+              title: "Neutral",
+              categoryField: "date"
+          }, {
+              fieldMappings: [{
+                  fromField: "value4",
+                  toField: "value"
+              }],
+              color: "#FF7F00",
+              dataProvider: this.finalStockTestData,
+              compared: true,
+              title: "Mixed",
               categoryField: "date"
           }],
           panels: [{
@@ -216,15 +229,34 @@ export class ResultComponent implements OnInit {
       }
 
       this.stockChart1 = this.AmCharts.makeChart('stockdiv1', newStockChartConfig);
-
+      setTimeout(() => {
+          this.AmCharts.updateChart(this.stockChart1, () => {
+              // Change whatever properties you want
+              var newData = this.generateChartData1NewSet(1);
+              this.stockChart1.dataSets[1].dataProvider = newData;
+              this.stockChart1.dataSets[0].dataProvider = newData;
+          });
+          this.stockSetTimeOut();
+      }, 5000);
   }
+
+    stockSetTimeOut() {
+        setTimeout(() => {
+            this.AmCharts.updateChart(this.stockChart1, () => {
+                // Change whatever properties you want
+                var newData = this.generateChartData1NewSet(2);
+                this.stockChart1.dataSets[1].dataProvider = newData;
+                this.stockChart1.dataSets[0].dataProvider = newData;
+            });
+        }, 5000);
+    }
 
     generateChartData1() {
         var firstDate = new Date();
         firstDate.setHours(0, 0, 0, 0);
-        firstDate.setDate(firstDate.getDate() - 2000);
+        firstDate.setDate(firstDate.getDate() - 10);
 
-        for (var i = 0; i < 2000; i++) {
+        for (var i = 0; i < 10; i++) {
             var newDate = new Date(firstDate);
 
             newDate.setDate(newDate.getDate() + i);
@@ -232,13 +264,40 @@ export class ResultComponent implements OnInit {
             var open = Math.round(Math.random() * (30) + 100);
             var value1 = open + Math.round(Math.random() * (15) - Math.random() * 10);
             var value2 = Math.round(Math.random() * (30) + 100);
+            var value3 = open + Math.round(Math.random() * (60) + 80);
+            var value4 = Math.round(Math.random() * (45) + 60);
 
             this.finalStockTestData[i] = ({
                 date: newDate,
                 value1: value1,
-                value2: value2
+                value2: value2,
+                value3: value3,
+                value4: value4,
             });
         }
+    }
+
+    generateChartData1NewSet (p) {
+        var firstDate = new Date();
+        firstDate.setHours(0, 0, 0, 0);
+        firstDate.setDate(firstDate.getDate() + p);
+
+        for (var i = 0; i < 1; i++) {
+            var newDate = new Date(firstDate);
+
+            newDate.setDate(newDate.getDate() + i);
+
+            var open = Math.round(Math.random() * (30) + 100);
+            var value1 = open + Math.round(Math.random() * (15) - Math.random() * 10);
+            var value2 = Math.round(Math.random() * (30) + 100);
+            var a = {
+                date: newDate,
+                value1: value1,
+                value2: value2}
+            };
+            this.finalStockTestData2 = JSON.parse(JSON.stringify(this.finalStockTestData));
+            this.finalStockTestData2.push(a);
+             return this.finalStockTestData2;
     }
 
   loadPieDataSet2() {

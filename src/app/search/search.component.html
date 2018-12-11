@@ -19,8 +19,39 @@
 <!-- Main Content -->
 
 <h2 *ngIf="userDetails">Welcome {{userDetails.first_name}} {{userDetails.last_name}}</h2>
-<input type="text" placeholder="set search term" [(ngModel)]="term" required>
-<button class="tg-btn" (click)="setSearchKeyWord(term)">Search</button>
+
+
+
+<div class="container">
+    <br/>
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-10 col-lg-8">
+            <span class="card card-sm">
+                <div class="card-body row no-gutters align-items-center">
+                    <div class="col-auto">
+                        <i class="fas fa-search h4 text-body"></i>
+                    </div>
+                    <!--end of col-->
+                    <div class="col">
+                        <input class="form-control form-control-lg form-control-borderless" type="search" [(ngModel)]="term" required
+                               placeholder="Search topics or keywords">
+                    </div>
+                    <!--end of col-->
+                    <div class="col-auto">
+                        <button class="btn btn-lg btn-success" type="submit" (click)="setSearchKeyWord(term)">Search</button>
+                    </div>
+                    <!--end of col-->
+                </div>
+            </span>
+        </div>
+        <!--end of col-->
+    </div>
+</div>
+
+
+
+<!--<input  class="inputSearch" type="text" placeholder="set search term" >-->
+<!--<button class="tg-btn" >Search</button>-->
 
 
 

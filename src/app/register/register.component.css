@@ -1,3 +1,10 @@
 .form-group input {
   width: 80%;
 }
+
+
+.registerBody {
+  background-color: #F1F1F1;
+  padding-top: 80px;
+  padding-bottom: 97px;
+}

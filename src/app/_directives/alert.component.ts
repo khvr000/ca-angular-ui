@@ -5,7 +5,8 @@ import { AlertService } from '../_services/alert.service';
 
 @Component({
   selector: 'alert',
-  templateUrl: 'alert.component.html'
+  templateUrl: 'alert.component.html',
+  styleUrls: ['alert.component.css']
 })
 
 export class AlertComponent implements OnInit, OnDestroy {
@@ -19,7 +20,7 @@ export class AlertComponent implements OnInit, OnDestroy {
       this.message = message;
       setTimeout(() => {
         this.message = '';
-      }, 3000);
+      }, 30000);
     });
   }
 
