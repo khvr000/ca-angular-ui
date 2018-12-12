@@ -1,36 +1,51 @@
 <!-- Side bar section -->
-<aside>
-  <ul>
-    <li>
-      <a href="#">Open Tasks</a>
-    </li>
-    <li>
-      <a href="#">Closed Tasks</a>
-    </li>
-    <li>
-      <a href="#">All Tasks</a>
-    </li>
+<!--<aside>-->
+  <!--<ul>-->
+    <!--<li>-->
+      <!--<a href="#">Open Tasks</a>-->
+    <!--</li>-->
+    <!--<li>-->
+      <!--<a href="#">Closed Tasks</a>-->
+    <!--</li>-->
+    <!--<li>-->
+      <!--<a href="#">All Tasks</a>-->
+    <!--</li>-->
 
 
 
-  </ul>
-</aside>
+  <!--</ul>-->
+<!--</aside>-->
+
+<div class="container-fluid">
+    <div class="row mainContent" >
+        <div class="col-md-12 " >
+            <div class="col-md-6 pieCharts">
+                <div class="piecharts block_style1">
+                    <h5 class="pie-chart-heading">Analysis for all Accounts</h5>
+                    <div id="piediv1"></div>
+                </div>
+            </div>
+            <div class="col-md-6 pieCharts">
+                <div class="piecharts block_style1">
+                    <h5 class="pie-chart-heading">Analysis for Verified Accounts</h5>
+                    <div id="piediv2"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 " >
+            <div class="block_style1_bar ">
+                <div id="bardiv1"></div>
+            </div>
+        </div>
 
 
-<div class="row">
-  <div class="col-md-12 " >
-      <div class="col-md-6 pieCharts">
-          <div id="piediv1"></div>
-      </div>
-      <div class="col-md-6 pieCharts">
-          <div id="piediv2"></div>
-      </div>
-  </div>
-  <div class="col-md-12 stockchart">
-      <div id="stockdiv1"></div>
-  </div>
-  <div class="col-md-12 stockchart">
-        <div id="stockdiv2"></div>
-  </div>
+        <div class="col-md-12 stockchart">
+            <div id="stockdiv1"></div>
+        </div>
+        <div class="col-md-12 stockchart">
+            <div id="stockdiv2"></div>
+        </div>
+    </div>
 </div>
+
 
