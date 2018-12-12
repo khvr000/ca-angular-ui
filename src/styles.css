@@ -6,7 +6,17 @@ body {
 
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body
+{ margin: 0;
+    font-family: Roboto,
+    "Helvetica Neue", sans-serif;
+    background-image: url('../src/assets/SentInsi8.jpg');
+    background-repeat: no-repeat;
+    min-width: 100%;
+    background-size: 100% 100%;
+    background-position: center;
+
+}
 
 mat-paginator-container {
     width: 86%;
