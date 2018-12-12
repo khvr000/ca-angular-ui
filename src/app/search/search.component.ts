@@ -5,6 +5,7 @@ import {UserService} from '../_services/user.service';
 import {SharedProperties} from '../_services/sharedProperties';
 import {MatPaginator, MatTableDataSource} from "@angular/material";
 import {Router} from "@angular/router";
+import {AlertService} from "../_services/alert.service";
 
 export interface PeriodicElement {
     time: string;
@@ -43,8 +44,8 @@ export class SearchComponent implements OnInit {
     responseJobId: string;
 
     constructor (private appService: AppService,
-                 private userService: UserService,private router: Router,
-                 private sharedPropertied: SharedProperties) {}
+                 private alertService: AlertService,
+                 private router: Router) {}
 
     ngOnInit() {
         this.loading = false;
@@ -86,9 +87,11 @@ export class SearchComponent implements OnInit {
 
     saveJobId(jobDetails) {
         this.appService.saveJobId(jobDetails).subscribe(res => {
+            this.alertService.success('Successfully submitted ' + jobDetails.trackWord + ' For Analysis');
             console.log('JOB ID SAVED');
-            alert('JOB ID SAVED');
-        })
+            this.getJobDetails();
+            this.term = '';
+        });
     }
 
 
