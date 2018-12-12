@@ -48,19 +48,34 @@ export class SearchComponent implements OnInit {
                  private sharedPropertied: SharedProperties) {}
 
     ngOnInit() {
-        this.userDetails = this.sharedPropertied.getUserDetails();
+        this.userDetails = JSON.parse(localStorage.getItem('userDetails'));
         this.dataSource.paginator = this.paginator;
     }
 
     setSearchKeyWord(keyword: string) {
         this.appService.setSearchKeyWord(keyword).subscribe(res => {
-            this.responseJobId = res['body'];
+            this.responseJobId = res;
+            console.log(this.userDetails);
+            var receivedJobDetails = {
+                'username': this.userDetails['username'],
+                'jobId': this.responseJobId,
+                'trackWord': keyword,
+                'time': JSON.stringify(new Date())
+            }
+            this.saveJobId(receivedJobDetails);
         });
     }
     viewResult(element) {
         console.log(element);
     }
 
+
+    saveJobId(jobDetails) {
+        this.appService.saveJobId(jobDetails).subscribe(res => {
+            console.log('JOB ID SAVED');
+            alert('JOB ID SAVED');
+        })
+    }
 
 
 }

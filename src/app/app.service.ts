@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {tap} from "rxjs/operators";
+import {saveJobModel} from "./_models/saveJobModel";
 
 @Injectable({
   providedIn: 'root',
@@ -7,15 +9,23 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 export class AppService {
   url = 'https://id6arpcbo3.execute-api.us-east-1.amazonaws.com/first/testapp';
 
-  newPostCalltestUrl = 'https://5aj1l4dikl.execute-api.ap-south-1.amazonaws.com/test/helloworld';
+  newPostCalltestUrl = 'http://13.233.128.151:5000/checkpost';
+  saveJobIdUrl = 'https://8nv3z5xrj7.execute-api.ap-south-1.amazonaws.com/stage01/ca/savejobid';
   randURl = 'https://id6arpcbo3.execute-api.us-east-1.amazonaws.com/first/testapp';
   constructor(private http: HttpClient) { }
 
   setSearchKeyWord (keyword: string) {
-    const body = {'key2': keyword};
-    return this.http.post(this.newPostCalltestUrl, body);
+    const headers = new HttpHeaders();
+    headers.append('Access-Control-Allow-Origin', '*');
+    const body = {
+        'track':  [keyword],
+        'name' : 'Akshay'
+    }	;
+    return this.http.post(this.newPostCalltestUrl, body,{responseType: 'text', headers}, );
   }
 
-
+    saveJobId (jobDetails) {
+        return this.http.post(this.saveJobIdUrl, jobDetails);
+  }
 
 }

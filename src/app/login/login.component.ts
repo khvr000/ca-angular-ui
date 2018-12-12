@@ -59,6 +59,7 @@ export class LoginComponent implements OnInit {
    this.loginService.loginCheck(loginModel).subscribe(res => {
          if (res['res'] === 'TRUE') {
            this.loginService.isLoggedIn = true;
+           localStorage.setItem('userDetails', JSON.stringify(res['details']));
            this.sharedProperties.setUserDetails(res['details']);
            this.router.navigate(['/home/search']);
          } else {

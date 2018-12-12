@@ -12,6 +12,7 @@ export class ResultComponent implements OnInit {
    pieChart1: any;
    pieChart2: any;
    stockChart1: any;
+   stockChart2: any;
    finalStockTestData = [];
    finalStockTestData2 = [];
    chartData1 = [];
@@ -116,12 +117,15 @@ export class ResultComponent implements OnInit {
 
       // STOCK CHARTS
       this.drawStockCharts();
+
+      // LIVE DATA STOCK CHARTS
+      this.drawLiveStockChart();
   }
 
 
   drawStockCharts() {
 
-      this.generateChartData1();
+      this.generateChartDataStatic();
 
       var newStockChartConfig = {
           type: "stock",
@@ -251,7 +255,7 @@ export class ResultComponent implements OnInit {
         }, 5000);
     }
 
-    generateChartData1() {
+    generateChartDataStatic() {
         var firstDate = new Date();
         firstDate.setHours(0, 0, 0, 0);
         firstDate.setDate(firstDate.getDate() - 10);
@@ -332,4 +336,184 @@ export class ResultComponent implements OnInit {
       }, 3000);
   }
 
+
+   drawLiveStockChart() {
+
+        this.generateChartData();
+        var liveStockChartConfig = {
+            "type": "stock",
+            "theme": "light",
+
+            // This will keep the selection at the end across data updates
+            "glueToTheEnd": true,
+
+            // Defining data sets
+            "dataSets": [ {
+                "title": "first data set",
+                "fieldMappings": [ {
+                    "fromField": "value",
+                    "toField": "value"
+                }, {
+                    "fromField": "volume",
+                    "toField": "volume"
+                } ],
+                "dataProvider": this.chartData1,
+                "categoryField": "date"
+            }, {
+                "title": "second data set",
+                "fieldMappings": [ {
+                    "fromField": "value",
+                    "toField": "value"
+                }, {
+                    "fromField": "volume",
+                    "toField": "volume"
+                } ],
+                "dataProvider": this.chartData2,
+                "categoryField": "date"
+            }, {
+                "title": "third data set",
+                "fieldMappings": [ {
+                    "fromField": "value",
+                    "toField": "value"
+                }, {
+                    "fromField": "volume",
+                    "toField": "volume"
+                } ],
+                "dataProvider": this.chartData3,
+                "categoryField": "date"
+            }, {
+                "title": "fourth data set",
+                "fieldMappings": [ {
+                    "fromField": "value",
+                    "toField": "value"
+                }, {
+                    "fromField": "volume",
+                    "toField": "volume"
+                } ],
+                "dataProvider": this.chartData4,
+                "categoryField": "date"
+            } ],
+
+            // Panels
+            "panels": [ {
+                "showCategoryAxis": false,
+                "title": "Value",
+                "percentHeight": 60,
+                "stockGraphs": [ {
+                    "id": "g1",
+                    "valueField": "value",
+                    "comparable": true,
+                    "compareField": "value"
+                } ],
+                "stockLegend": {}
+            }, {
+                "title": "Volume",
+                "percentHeight": 40,
+                "stockGraphs": [ {
+                    "valueField": "volume",
+                    "type": "column",
+                    "showBalloon": false,
+                    "fillAlphas": 1
+                } ],
+                "stockLegend": {}
+            } ],
+
+            // Scrollbar settings
+            "chartScrollbarSettings": {
+                "graph": "g1",
+                "usePeriod": "WW"
+            },
+
+            // Period Selector
+            "periodSelector": {
+                "position": "left",
+                "periods": [ {
+                    "period": "DD",
+                    "count": 10,
+                    "label": "10 days"
+                }, {
+                    "period": "MM",
+                    "selected": true,
+                    "count": 1,
+                    "label": "1 month"
+                }, {
+                    "period": "YYYY",
+                    "count": 1,
+                    "label": "1 year"
+                }, {
+                    "period": "YTD",
+                    "label": "YTD"
+                }, {
+                    "period": "MAX",
+                    "label": "MAX"
+                } ]
+            },
+
+            // Data Set Selector
+            "dataSetSelector": {
+                "position": "left"
+            },
+
+            // Event listeners
+            "listeners": [ {
+                "event": "rendered",
+                "method": function( event ) {
+                    this.stockChart2.mouseDown = false;
+                    this.stockChart2.containerDiv.onmousedown = function() {
+                        this.stockChart2.mouseDown = true;
+                    }
+                    this.stockChart2.containerDiv.onmouseup = function() {
+                        this.stockChart2.mouseDown = false;
+                    }
+                }
+            } ]
+        }
+
+       // this.stockChart2 = this.AmCharts.makeChart('stockdiv2', liveStockChartConfig);
+
+   }
+
+    generateChartData() {
+        var firstDate = new Date();
+        firstDate.setDate( firstDate.getDate() - 500 );
+        firstDate.setHours( 0, 0, 0, 0 );
+
+        for ( var i = 0; i < 500; i++ ) {
+            var newDate = new Date( firstDate );
+            newDate.setDate( newDate.getDate() + i );
+
+            var a1 = Math.round( Math.random() * ( 40 + i ) ) + 100 + i;
+            var b1 = Math.round( Math.random() * ( 1000 + i ) ) + 500 + i * 2;
+
+            var a2 = Math.round( Math.random() * ( 100 + i ) ) + 200 + i;
+            var b2 = Math.round( Math.random() * ( 1000 + i ) ) + 600 + i * 2;
+
+            var a3 = Math.round( Math.random() * ( 100 + i ) ) + 200;
+            var b3 = Math.round( Math.random() * ( 1000 + i ) ) + 600 + i * 2;
+
+            var a4 = Math.round( Math.random() * ( 100 + i ) ) + 200 + i;
+            var b4 = Math.round( Math.random() * ( 100 + i ) ) + 600 + i;
+
+            this.chartData1.push( {
+                "date": newDate,
+                "value": a1,
+                "volume": b1
+            } );
+            this.chartData2.push( {
+                "date": newDate,
+                "value": a2,
+                "volume": b2
+            } );
+            this.chartData3.push( {
+                "date": newDate,
+                "value": a3,
+                "volume": b3
+            } );
+            this.chartData4.push( {
+                "date": newDate,
+                "value": a4,
+                "volume": b4
+            } );
+        }
+    }
 }
