@@ -1,12 +1,12 @@
 /* ----- SIDE BAR ----*/
 
-aside {
+/*aside {
     background-color: #515F60;
     float: left;
     width: 200px;
     text-align: center;
     height: 400px;
-    /*overflow-y: scroll;*/
+    !*overflow-y: scroll;*!
 }
 
 aside ul {
@@ -26,7 +26,7 @@ aside ul li a {
 aside ul li a:hover {
     background-color: #1C2525;
     color: white;
-}
+}*/
 
 #hoverIcon a:hover{
     /*color: ;*/
@@ -96,4 +96,36 @@ summary {
 
 .inputSearch {
 
+}
+
+.btn-success {
+    color: #fff;
+    background-color: #2a3736;
+    border-color: #28a745;
+}
+
+.card {
+    border-radius: 5.25rem;
+}
+
+table {
+    width: 56%;
+    left: 282px;
+    position: relative;
+    margin-top: 65px;
+    margin-bottom: 10px;
+}
+
+mat-paginator {
+    width: 56%;
+    position: relative;
+    left: 284px;
+}
+
+.search-heading {
+    position: relative;
+    left: 283px;
+    top: 51px;
+    text-decoration: underline;
+    color: #2a3736;
 }

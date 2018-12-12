@@ -122,3 +122,8 @@ nav .logOut {
 }
 
 
+.page-footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}

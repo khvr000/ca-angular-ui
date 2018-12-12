@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+/*import {MatTableModule} from '@angular/material/table';*/
+
 
 // used to create fake backend
 
@@ -23,16 +25,21 @@ import {LoginService} from './_services/login.service';
 import {SharedProperties} from './_services/sharedProperties';
 import { ResultComponent } from './result/result.component';
 import { SearchComponent } from './search/search.component';
-import {AmChartsModule} from "@amcharts/amcharts3-angular";
+import {AmChartsModule} from '@amcharts/amcharts3-angular';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatPaginatorModule, MatTableModule} from '@angular/material';
 
 @NgModule({
   imports: [
     BrowserModule,
     FormsModule,
+    MatTableModule,
     ReactiveFormsModule,
     HttpClientModule,
     AppRouting,
-    AmChartsModule
+    AmChartsModule,
+    MatPaginatorModule,
+    BrowserAnimationsModule
   ],
   declarations: [
     AppComponent,

@@ -1,5 +1,7 @@
 <!-- Side bar section -->
-<aside>
+<!-- commentin as of now by akshay raj-->
+
+<!--<aside>
   <ul>
     <li>
       <a href="#">Smart Search</a>
@@ -12,24 +14,24 @@
     </li>
 
   </ul>
-</aside>
+</aside>-->
 
 
 
 <!-- Main Content -->
 
-<h2 *ngIf="userDetails">Welcome {{userDetails.first_name}} {{userDetails.last_name}}</h2>
+<!--<h2 *ngIf="userDetails">Welcome {{userDetails.first_name}} {{userDetails.last_name}}</h2>-->
 
 
 
 <div class="container">
     <br/>
     <div class="row justify-content-center">
-        <div class="col-12 col-md-10 col-lg-8">
+        <div class=" col-lg-8">
             <span class="card card-sm">
-                <div class="card-body row no-gutters align-items-center">
+                <div class="row no-gutters align-items-center">
                     <div class="col-auto">
-                        <i class="fas fa-search h4 text-body"></i>
+                        <i class="fas fa-search h4 text-body" style="visibility: hidden"></i>
                     </div>
                     <!--end of col-->
                     <div class="col">
@@ -37,8 +39,9 @@
                                placeholder="Search topics or keywords">
                     </div>
                     <!--end of col-->
-                    <div class="col-auto">
-                        <button class="btn btn-lg btn-success" type="submit" (click)="setSearchKeyWord(term)">Search</button>
+                    <div class="col-auto mr-3" (click)="setSearchKeyWord(term)">
+                        <!--<button class="btn btn-lg btn-success" type="submit" (click)="setSearchKeyWord(term)">Search</button>-->
+                    <i class="fas fa-search h4 text-body pt-2" ></i>
                     </div>
                     <!--end of col-->
                 </div>
@@ -47,6 +50,53 @@
         <!--end of col-->
     </div>
 </div>
+<div class="search-result">
+    <h6 class="search-heading">Search Results</h6>
+    <div >
+        <table  mat-table class="mat-elevation-z8" [dataSource]="dataSource">
+
+            <!-- Position Column -->
+            <ng-container matColumnDef="Keyword">
+                <th mat-header-cell *matHeaderCellDef> Search Word </th>
+                <td mat-cell *matCellDef="let element"> {{element.Keyword}} </td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="RequestTime">
+                <th mat-header-cell *matHeaderCellDef> Reuest Time </th>
+                <td mat-cell *matCellDef="let element"> {{element.RequestTime}} </td>
+            </ng-container>
+
+            <!-- Weight Column -->
+            <ng-container matColumnDef="View">
+                <th mat-header-cell *matHeaderCellDef> View </th>
+                <td mat-cell *matCellDef="let element">
+                  <button (click)="viewResult(element)">{{element.View}}</button>
+                </td>
+            </ng-container>
+
+            <!-- Symbol Column -->
+
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <mat-paginator class="mat-elevation-z8" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+</div>
+
+
+
+<!-- Copyright 2018 Google Inc. All Rights Reserved.
+    Use of this source code is governed by an MIT-style license that
+    can be found in the LICENSE file at http://angular.io/license -->
+
+
+
+<!-- Copyright 2018 Google Inc. All Rights Reserved.
+    Use of this source code is governed by an MIT-style license that
+    can be found in the LICENSE file at http://angular.io/license -->
 
 
 
@@ -56,21 +106,21 @@
 
 
 
-<section>
-  <!-- HTML -->
+<!--<section>
+  &lt;!&ndash; HTML &ndash;&gt;
   <details>
     <article>Your Job ID Generated is :</article>
 
 
-    <!--<article>-->
-      <!--<h3>HTML</h3>-->
-      <!--<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus itaque, praesentium. Est et minima-->
-        <!--molestias neque, nesciunt quod recusandae vel.</p>-->
-      <!--<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias aspernatur assumenda autem doloremque ex-->
-        <!--hic ipsum iste laboriosam, magnam nam nesciunt nisi nobis nostrum reiciendis rerum suscipit totam vero,-->
-        <!--voluptatibus.</p>-->
-    <!--</article>-->
+    &lt;!&ndash;<article>&ndash;&gt;
+      &lt;!&ndash;<h3>HTML</h3>&ndash;&gt;
+      &lt;!&ndash;<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus itaque, praesentium. Est et minima&ndash;&gt;
+        &lt;!&ndash;molestias neque, nesciunt quod recusandae vel.</p>&ndash;&gt;
+      &lt;!&ndash;<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias aspernatur assumenda autem doloremque ex&ndash;&gt;
+        &lt;!&ndash;hic ipsum iste laboriosam, magnam nam nesciunt nisi nobis nostrum reiciendis rerum suscipit totam vero,&ndash;&gt;
+        &lt;!&ndash;voluptatibus.</p>&ndash;&gt;
+    &lt;!&ndash;</article>&ndash;&gt;
   </details>
 
-</section>
+</section>-->
 
