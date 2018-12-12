@@ -39,7 +39,7 @@
     </ul>
     <ul class="logOut">
         <li>
-            <p><a [routerLink]="['/login']">Logout</a></p>
+            <p><a (click)="logout()" [routerLink]="['/login']">Logout</a></p>
         </li>
     </ul>
 </nav>
