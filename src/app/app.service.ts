@@ -12,9 +12,10 @@ export class AppService {
   newPostCalltestUrl = 'http://13.233.128.151:5000/checkpost';
   saveJobIdUrl = 'https://8nv3z5xrj7.execute-api.ap-south-1.amazonaws.com/stage01/ca/savejobid';
   randURl = 'https://id6arpcbo3.execute-api.us-east-1.amazonaws.com/first/testapp';
+  getJobIdsUrl = 'https://8nv3z5xrj7.execute-api.ap-south-1.amazonaws.com/stage01/ca/getjobids'
   constructor(private http: HttpClient) { }
 
-  setSearchKeyWord (keyword: string) {
+  setSearchtrackWord (keyword: string) {
     const headers = new HttpHeaders();
     headers.append('Access-Control-Allow-Origin', '*');
     const body = {
@@ -27,5 +28,7 @@ export class AppService {
     saveJobId (jobDetails) {
         return this.http.post(this.saveJobIdUrl, jobDetails);
   }
-
+  getJobIds (userDetails) {
+    return this.http.post(this.getJobIdsUrl, userDetails);
+  }
 }

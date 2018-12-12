@@ -18,11 +18,11 @@ export class AppComponent {
 
   constructor (private appService: AppService) {}
 
-  setSearchKeyWord(keyword: string) {
+  /*setSearchtrackWord(keyword: string) {
     this.appService.setSearchKeyWord(keyword).subscribe(res => {
       this.responseJobId = res['body'];
     });
-  }
+  }*/
 
 
 

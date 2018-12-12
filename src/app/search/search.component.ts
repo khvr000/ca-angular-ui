@@ -4,23 +4,23 @@ import {AppService} from '../app.service';
 import {UserService} from '../_services/user.service';
 import {SharedProperties} from '../_services/sharedProperties';
 import {MatPaginator, MatTableDataSource} from "@angular/material";
+import {Router} from "@angular/router";
 
 export interface PeriodicElement {
-    RequestTime: string;
-    Keyword: string;
+    time: string;
+    trackWord: string;
     View: string;
     jobId: string;
 }
-
-const ELEMENT_DATA: PeriodicElement[] = [
-    {Keyword: 'Car', RequestTime: 'Dec 12 2018 15:21:50', View: 'Show', jobId: 'H'},
-    {Keyword: 'Car', RequestTime: 'Dec 12 2018 15:21:50', View: 'Show', jobId: 'He'},
-    {Keyword: 'Car', RequestTime: 'Dec 12 2018 15:21:50', View: 'Show', jobId: 'Li'},
-    {Keyword: 'Car', RequestTime: 'Dec 12 2018 15:21:50', View: 'Show', jobId: 'Be'},
-    {Keyword: 'Car', RequestTime: 'Dec 12 2018 15:21:50', View: 'Show', jobId: 'B'},
-    {Keyword: 'Car', RequestTime: 'Dec 12 2018 15:21:50', View: 'Show', jobId: 'C'},
-    {Keyword: 'Car', RequestTime: 'Dec 12 2018 15:21:50', View: 'Show', jobId: 'N'}
-];
+/*
+* {trackWord: 'Car', time: 'Dec 12 2018 15:21:50', View: 'Show', jobId: 'H'},
+ {trackWord: 'Car', time: 'Dec 12 2018 15:21:50', View: 'Show', jobId: 'He'},
+ {trackWord: 'Car', time: 'Dec 12 2018 15:21:50', View: 'Show', jobId: 'Li'},
+ {trackWord: 'Car', time: 'Dec 12 2018 15:21:50', View: 'Show', jobId: 'Be'},
+ {trackWord: 'Car', time: 'Dec 12 2018 15:21:50', View: 'Show', jobId: 'B'},
+ {trackWord: 'Car', time: 'Dec 12 2018 15:21:50', View: 'Show', jobId: 'C'},
+ {trackWord: 'Car', time: 'Dec 12 2018 15:21:50', View: 'Show', jobId: 'N'}*/
+let ELEMENT_DATA = [];
 
 @Component({
   selector: 'app-search',
@@ -29,13 +29,12 @@ const ELEMENT_DATA: PeriodicElement[] = [
 })
 export class SearchComponent implements OnInit {
 
-    displayedColumns: string[] = ['Keyword', 'RequestTime', 'View'];
-    dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+    displayedColumns: string[] = ['trackWord', 'time', 'View'];
     @ViewChild(MatPaginator) paginator: MatPaginator;
-
+    dataSource: any;
     currentUser: User;
     users: User[] = [];
-
+    loading = false;
 
     title = 'ci-angular-ui';
     term;
@@ -44,22 +43,36 @@ export class SearchComponent implements OnInit {
     responseJobId: string;
 
     constructor (private appService: AppService,
-                 private userService: UserService,
+                 private userService: UserService,private router: Router,
                  private sharedPropertied: SharedProperties) {}
 
     ngOnInit() {
+        this.loading = false;
         this.userDetails = JSON.parse(localStorage.getItem('userDetails'));
-        this.dataSource.paginator = this.paginator;
-    }
 
-    setSearchKeyWord(keyword: string) {
-        this.appService.setSearchKeyWord(keyword).subscribe(res => {
+        this.getJobDetails();
+
+    }
+    getJobDetails() {
+        this.appService.getJobIds(this.userDetails).subscribe(res => {
+           console.log('response', typeof res);
+           const peopleArray = Object.keys(res).map(i => res[i]);
+           console.log( peopleArray);
+           ELEMENT_DATA = peopleArray;
+           console.log('Elements Data', ELEMENT_DATA);
+           this.dataSource = ELEMENT_DATA;
+           this.dataSource.paginator = this.paginator;
+           this.loading = true;
+        });
+    }
+    setSearchtrackWord(trackWord: string) {
+        this.appService.setSearchtrackWord(trackWord).subscribe(res => {
             this.responseJobId = res;
             console.log(this.userDetails);
             var receivedJobDetails = {
                 'username': this.userDetails['username'],
                 'jobId': this.responseJobId,
-                'trackWord': keyword,
+                'trackWord': trackWord,
                 'time': JSON.stringify(new Date())
             }
             this.saveJobId(receivedJobDetails);
@@ -67,6 +80,7 @@ export class SearchComponent implements OnInit {
     }
     viewResult(element) {
         console.log(element);
+        this.router.navigate(['home/results', element.jobId]);
     }
 
 

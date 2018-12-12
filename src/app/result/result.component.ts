@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AmChartsService} from '@amcharts/amcharts3-angular';
 import {CAChartConfig} from '../global/chartConfig';
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-result',
@@ -107,7 +108,9 @@ export class ResultComponent implements OnInit {
     };
 
 
-    constructor(private AmCharts: AmChartsService) { }
+    constructor(private AmCharts: AmChartsService,private route: ActivatedRoute) {
+        this.route.params.subscribe( params => console.log('hi', params) );
+    }
 
   ngOnInit() {
       this.pieChart1 = this.AmCharts.makeChart('piediv1', this.pieChartConfig1);

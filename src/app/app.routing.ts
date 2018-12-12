@@ -31,7 +31,7 @@ const appRoutes: Routes = [
       // canActivate: [AuthGuard],
       children: [
             { path: '', component: SearchComponent},
-            { path: 'results', component: ResultComponent },
+            { path: 'results/:id', component: ResultComponent },
             { path: 'search', component: SearchComponent },
             { path: '**', component: SearchComponent, pathMatch: 'full'}
       ]
