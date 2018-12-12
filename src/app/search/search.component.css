@@ -123,9 +123,10 @@ mat-paginator {
 }
 
 .search-heading {
-    position: relative;
-    left: 283px;
-    top: 51px;
+
     text-decoration: underline;
     color: #2a3736;
+}
+.search-result{
+    padding-bottom: 20px;
 }

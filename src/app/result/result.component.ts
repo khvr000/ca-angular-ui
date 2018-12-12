@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { AmChartsService} from '@amcharts/amcharts3-angular';
 import {CAChartConfig} from '../global/chartConfig';
 import {ActivatedRoute} from "@angular/router";
+import {ResultService} from "../_services/result.service";
 
 @Component({
   selector: 'app-result',
   templateUrl: './result.component.html',
   styleUrls: ['./result.component.css']
 })
-export class ResultComponent implements OnInit {
+export class ResultComponent implements OnInit, OnDestroy {
 
    pieChart1: any;
    pieChart2: any;
@@ -20,41 +21,48 @@ export class ResultComponent implements OnInit {
    chartData2 = [];
    chartData3 = [];
    chartData4 = [];
+   jobId : string;
+   reload: boolean;
+   refreshIntervalId: any;
 
-   pieChartDataSet1 = [{
-        sentiment: 'Positive',
-        value: 260,
-        color: '#00B333'},
-        {
-            sentiment: 'Negative',
-            value: 201,
-            color: '#DA0000'},
-        {
-            sentiment: 'Neutral',
-            value: 65,
-            color: '#3563B6'},
-        {
-            sentiment: 'Mixed',
-            value: 39,
-            color: '#FF7F00'}];
+   pieChartDataSet1 = [
+       {
+           'sentiment': 'positive',
+           'value': '0.0759440101828659'
+       },
+       {
+           'sentiment': 'negative',
+           'value': '1.2069939565844834'
+       },
+       {
+           'sentiment': 'neutral',
+           'value': '3.498561769723892'
+       },
+       {
+           'sentiment': 'mixed',
+           'value': '0.21850025688763708'
+       }
+   ]
 
 
-    pieChartDataSet2 = [{
-        sentiment: 'Positive',
-        value: 140,
-        color: '#00B333'},
+    pieChartDataSet2 = [
         {
-            sentiment: 'Negative',
-            value: 98,
-            color: '#DA0000'},
+            'sentiment': 'positive',
+            'value': '0.8584888086043065'
+        },
         {
-            sentiment: 'Neutral',
-            value: 140,
-            color: '#3563B6'},
+            'sentiment': 'negative',
+            'value': '1.3825850707653444'
+        },
         {
-            sentiment: 'Mixed',
-            value: 139,
-            color: '#FF7F00'}];
+            'sentiment': 'neutral',
+            'value': '7.518721833825111'
+        },
+        {
+            'sentiment': 'mixed',
+            'value': '0.24020433775149286'
+        }
+    ];
 
 
     pieChartConfig1 = {
@@ -108,23 +116,76 @@ export class ResultComponent implements OnInit {
     };
 
 
-    constructor(private AmCharts: AmChartsService,private route: ActivatedRoute) {
-        this.route.params.subscribe( params => console.log('hi', params) );
+
+    constructor(private AmCharts: AmChartsService,private route: ActivatedRoute,
+                private resultService: ResultService) {
+        this.route.params.subscribe( params => {
+                this.jobId = params['id'];
+            }
+        );
     }
 
   ngOnInit() {
-      this.pieChart1 = this.AmCharts.makeChart('piediv1', this.pieChartConfig1);
-      this.pieChart2 = this.AmCharts.makeChart('piediv2', this.pieChartConfig2);
+
+      // this.pieChart1 = this.AmCharts.makeChart('piediv1', this.pieChartConfig1);
+      // this.pieChart2 = this.AmCharts.makeChart('piediv2', this.pieChartConfig2);
       this.loadPieDataSet2();
       // this.setStockChart();
 
       // STOCK CHARTS
-      this.drawStockCharts();
+      // this.drawStockCharts();
 
       // LIVE DATA STOCK CHARTS
       this.drawLiveStockChart();
+
+
+
+       // main functinality
+
+      this.drawAllCharts();
+
+      this.refreshIntervalId = setInterval(() => {
+          this.reDrawAllCharts();
+      }, 10000);
+
+
   }
 
+  drawAllCharts() {
+        this.drawFirstPieChartData();
+
+  }
+
+  reDrawAllCharts() {
+        this.redrawFirstPieChart();
+  }
+
+  drawFirstPieChartData () {
+     this.resultService.getFirstPieChartData(this.jobId).subscribe(res => {
+         var newFetchedData = res['body'];
+         this.pieChart1 = this.AmCharts.makeChart('piediv1', this.pieChartConfig1);
+         console.log(res);
+     });
+
+  }
+
+  redrawFirstPieChart() {
+      this.resultService.getFirstPieChartData(this.jobId).subscribe(res => {
+          let newFetchedData = res['body'];
+          console.log(res);
+          this.AmCharts.updateChart(this.pieChart1, () => {
+              // Change whatever properties you want
+              this.pieChart1.dataProvider = newFetchedData;
+          });
+
+      });
+  }
+
+  fetchSecondPieChartData () {
+        this.resultService.getFirstPieChartData(this.jobId).subscribe(res => {
+
+        });
+    }
 
   drawStockCharts() {
 
@@ -135,7 +196,7 @@ export class ResultComponent implements OnInit {
           "theme": "none",
           dataSets: [{
               fieldMappings: [{
-                  fromField: "value1",
+                  fromField: "positive",
                   toField: "value"
               }],
 
@@ -145,7 +206,7 @@ export class ResultComponent implements OnInit {
               categoryField: "date"
           }, {
               fieldMappings: [{
-                  fromField: "value2",
+                  fromField: "negative",
                   toField: "value"
               }],
               color: "#DA0000",
@@ -155,7 +216,7 @@ export class ResultComponent implements OnInit {
               categoryField: "date"
           }, {
               fieldMappings: [{
-                  fromField: "value3",
+                  fromField: "neutral",
                   toField: "value"
               }],
               color: "#3563B6",
@@ -165,7 +226,7 @@ export class ResultComponent implements OnInit {
               categoryField: "date"
           }, {
               fieldMappings: [{
-                  fromField: "value4",
+                  fromField: "mixed",
                   toField: "value"
               }],
               color: "#FF7F00",
@@ -188,8 +249,8 @@ export class ResultComponent implements OnInit {
 
               stockGraphs: [{
                   id: "g1",
-                  type: "smoothedLine",
-                  compareGraphType: "smoothedLine",
+                  // type: "smoothedLine",
+                  // compareGraphType: "smoothedLine",
                   valueField: "value",
                   lineColor: "#7f8da9",
                   lineThickness: 2,
@@ -210,41 +271,45 @@ export class ResultComponent implements OnInit {
               graphType: "line",
               usePeriod: "WW"
           },
-          periodSelector: {
-              position: "bottom",
-              periods: [{
-                  period: "DD",
-                  count: 10,
-                  label: "10 days"
-              }, {
-                  period: "MM",
-                  selected: true,
-                  count: 1,
-                  label: "1 month"
-              }, {
-                  period: "YYYY",
-                  count: 1,
-                  label: "1 year"
-              }, {
-                  period: "YTD",
-                  label: "YTD"
-              }, {
-                  period: "MAX",
-                  label: "MAX"
-              }]
-          }
+          // periodSelector: {
+          //     position: "bottom",
+          //     periods: [{
+          //         period: "DD",
+          //         count: 10,
+          //         label: "10 days"
+          //     }, {
+          //         period: "MM",
+          //         selected: true,
+          //         count: 1,
+          //         label: "1 month"
+          //     }, {
+          //         period: "YYYY",
+          //         count: 1,
+          //         label: "1 year"
+          //     }, {
+          //         period: "YTD",
+          //         label: "YTD"
+          //     }, {
+          //         period: "MAX",
+          //         label: "MAX"
+          //     }]
+          // }
       }
 
       this.stockChart1 = this.AmCharts.makeChart('stockdiv1', newStockChartConfig);
-      setTimeout(() => {
+        var p = 1;
+      setInterval(() => {
+          var newData = this.generateChartData1NewSet(p);
           this.AmCharts.updateChart(this.stockChart1, () => {
               // Change whatever properties you want
-              var newData = this.generateChartData1NewSet(1);
               this.stockChart1.dataSets[1].dataProvider = newData;
               this.stockChart1.dataSets[0].dataProvider = newData;
+              this.stockChart1.dataSets[2].dataProvider = newData;
+              this.stockChart1.dataSets[3].dataProvider = newData;
           });
-          this.stockSetTimeOut();
-      }, 5000);
+          // this.stockSetTimeOut();
+          p = p+1;
+      }, 2000);
   }
 
     stockSetTimeOut() {
@@ -260,26 +325,24 @@ export class ResultComponent implements OnInit {
 
     generateChartDataStatic() {
         var firstDate = new Date();
-        firstDate.setHours(0, 0, 0, 0);
-        firstDate.setDate(firstDate.getDate() - 10);
+        // firstDate.setHours(0, 0, 0, 0);
+        firstDate.setDate(firstDate.getDate() - 12);
 
         for (var i = 0; i < 10; i++) {
             var newDate = new Date(firstDate);
 
             newDate.setDate(newDate.getDate() + i);
-
-            var open = Math.round(Math.random() * (30) + 100);
-            var value1 = open + Math.round(Math.random() * (15) - Math.random() * 10);
-            var value2 = Math.round(Math.random() * (30) + 100);
-            var value3 = open + Math.round(Math.random() * (60) + 80);
-            var value4 = Math.round(Math.random() * (45) + 60);
+            var value1 = Math.random();
+            var value2 = Math.random();
+            var value3 = Math.random();
+            var value4 = Math.random();
 
             this.finalStockTestData[i] = ({
                 date: newDate,
-                value1: value1,
-                value2: value2,
-                value3: value3,
-                value4: value4,
+                positive: value1,
+                negative: value2,
+                neutral: value3,
+                mixed: value4,
             });
         }
     }
@@ -294,17 +357,21 @@ export class ResultComponent implements OnInit {
 
             newDate.setDate(newDate.getDate() + i);
 
-            var open = Math.round(Math.random() * (30) + 100);
-            var value1 = open + Math.round(Math.random() * (15) - Math.random() * 10);
-            var value2 = Math.round(Math.random() * (30) + 100);
+            var value1 = Math.random();
+            var value2 = Math.random();
+            var value3 = Math.random();
+            var value4 = Math.random();
             var a = {
                 date: newDate,
-                value1: value1,
-                value2: value2}
+                positive: value1,
+                negative: value2,
+                neutral: value3,
+                mixed: value4,}
             };
             this.finalStockTestData2 = JSON.parse(JSON.stringify(this.finalStockTestData));
             this.finalStockTestData2.push(a);
-             return this.finalStockTestData2;
+            this.finalStockTestData2.shift();
+            return this.finalStockTestData2;
     }
 
   loadPieDataSet2() {
@@ -356,9 +423,6 @@ export class ResultComponent implements OnInit {
                 "fieldMappings": [ {
                     "fromField": "value",
                     "toField": "value"
-                }, {
-                    "fromField": "volume",
-                    "toField": "volume"
                 } ],
                 "dataProvider": this.chartData1,
                 "categoryField": "date"
@@ -367,10 +431,7 @@ export class ResultComponent implements OnInit {
                 "fieldMappings": [ {
                     "fromField": "value",
                     "toField": "value"
-                }, {
-                    "fromField": "volume",
-                    "toField": "volume"
-                } ],
+                }],
                 "dataProvider": this.chartData2,
                 "categoryField": "date"
             }, {
@@ -378,10 +439,7 @@ export class ResultComponent implements OnInit {
                 "fieldMappings": [ {
                     "fromField": "value",
                     "toField": "value"
-                }, {
-                    "fromField": "volume",
-                    "toField": "volume"
-                } ],
+                }],
                 "dataProvider": this.chartData3,
                 "categoryField": "date"
             }, {
@@ -389,9 +447,6 @@ export class ResultComponent implements OnInit {
                 "fieldMappings": [ {
                     "fromField": "value",
                     "toField": "value"
-                }, {
-                    "fromField": "volume",
-                    "toField": "volume"
                 } ],
                 "dataProvider": this.chartData4,
                 "categoryField": "date"
@@ -405,18 +460,7 @@ export class ResultComponent implements OnInit {
                 "stockGraphs": [ {
                     "id": "g1",
                     "valueField": "value",
-                    "comparable": true,
-                    "compareField": "value"
-                } ],
-                "stockLegend": {}
-            }, {
-                "title": "Volume",
-                "percentHeight": 40,
-                "stockGraphs": [ {
-                    "valueField": "volume",
-                    "type": "column",
-                    "showBalloon": false,
-                    "fillAlphas": 1
+                    "comparable": true
                 } ],
                 "stockLegend": {}
             } ],
@@ -424,7 +468,7 @@ export class ResultComponent implements OnInit {
             // Scrollbar settings
             "chartScrollbarSettings": {
                 "graph": "g1",
-                "usePeriod": "WW"
+                "usePeriod": "DD"
             },
 
             // Period Selector
@@ -458,19 +502,75 @@ export class ResultComponent implements OnInit {
             },
 
             // Event listeners
-            "listeners": [ {
-                "event": "rendered",
-                "method": function( event ) {
-                    this.stockChart2.mouseDown = false;
-                    this.stockChart2.containerDiv.onmousedown = function() {
-                        this.stockChart2.mouseDown = true;
-                    }
-                    this.stockChart2.containerDiv.onmouseup = function() {
-                        this.stockChart2.mouseDown = false;
-                    }
-                }
-            } ]
+            // "listeners": [ {
+            //     "event": "rendered",
+            //     "method": function( event ) {
+            //         this.stockChart2.mouseDown = false;
+            //         this.stockChart2.containerDiv.onmousedown = function() {
+            //             this.stockChart2.mouseDown = true;
+            //         }
+            //         this.stockChart2.containerDiv.onmouseup = function() {
+            //             this.stockChart2.mouseDown = false;
+            //         }
+            //     }
+            // } ]
         }
+        var chart = this.AmCharts.makeChart('stockdiv2',liveStockChartConfig)
+
+       setInterval( () => {
+
+           // if mouse is down, stop all updates
+           if ( chart.mouseDown )
+               return;
+
+           // normally you would load new datapoints here,
+           // but we will just generate some random values
+           // and remove the value from the beginning so that
+           // we get nice sliding graph feeling
+
+           // remove datapoint from the beginning
+           // chartData1.shift();
+           //chartData2.shift();
+           //chartData3.shift();
+           // chartData4.shift();
+
+           // add new datapoint at the end
+           var newDate = new Date( this.chartData1[ this.chartData1.length - 1 ].date );
+           newDate.setDate( newDate.getDate() + 1 );
+
+           var i = this.chartData1.length;
+
+           var a1 = Math.round( Math.random() * ( 40 + i ) ) + 100 + i;
+           var b1 = Math.round( Math.random() * ( 1000 + i ) ) + 500 + i * 2;
+
+           var a2 = Math.round( Math.random() * ( 100 + i ) ) + 200 + i;
+           var b2 = Math.round( Math.random() * ( 1000 + i ) ) + 600 + i * 2;
+
+           var a3 = Math.round( Math.random() * ( 100 + i ) ) + 200;
+           var b3 = Math.round( Math.random() * ( 1000 + i ) ) + 600 + i * 2;
+
+           var a4 = Math.round( Math.random() * ( 100 + i ) ) + 200 + i;
+           var b4 = Math.round( Math.random() * ( 100 + i ) ) + 600 + i;
+
+           chart.dataSets[ 0 ].dataProvider.push( {
+               date: newDate,
+               value: a1
+           } );
+           chart.dataSets[ 1 ].dataProvider.push( {
+               date: newDate,
+               value: a2
+           } );
+           chart.dataSets[ 2 ].dataProvider.push( {
+               date: newDate,
+               value: a3
+           } );
+           chart.dataSets[ 3 ].dataProvider.push( {
+               date: newDate,
+               value: a4
+           } );
+
+           chart.validateData();
+       }, 1000 );
 
        // this.stockChart2 = this.AmCharts.makeChart('stockdiv2', liveStockChartConfig);
 
@@ -478,10 +578,11 @@ export class ResultComponent implements OnInit {
 
     generateChartData() {
         var firstDate = new Date();
-        firstDate.setDate( firstDate.getDate() - 500 );
+        // const startDate = moment(dateF).set({hour: 0, minute: 0, second: 0, millisecond: 0}).format(this.chartDateFormat);
+        firstDate.setDate( firstDate.getDate() - 10 );
         firstDate.setHours( 0, 0, 0, 0 );
 
-        for ( var i = 0; i < 500; i++ ) {
+        for ( var i = 0; i < 10; i++ ) {
             var newDate = new Date( firstDate );
             newDate.setDate( newDate.getDate() + i );
 
@@ -499,24 +600,32 @@ export class ResultComponent implements OnInit {
 
             this.chartData1.push( {
                 "date": newDate,
-                "value": a1,
-                "volume": b1
+                "value": a1
             } );
             this.chartData2.push( {
                 "date": newDate,
-                "value": a2,
-                "volume": b2
+                "value": a2
             } );
             this.chartData3.push( {
                 "date": newDate,
-                "value": a3,
-                "volume": b3
+                "value": a3
             } );
             this.chartData4.push( {
                 "date": newDate,
-                "value": a4,
-                "volume": b4
+                "value": a4
             } );
         }
     }
+
+
+
+
+    ngOnDestroy() {
+        clearInterval(this.refreshIntervalId);
+        this.pieChart1.clear();
+    }
+
 }
+
+
+
