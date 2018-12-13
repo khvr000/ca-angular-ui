@@ -3,8 +3,9 @@ import { AmChartsService} from '@amcharts/amcharts3-angular';
 import {CAChartConfig} from '../global/chartConfig';
 import {ActivatedRoute} from "@angular/router";
 import {ResultService} from "../_services/result.service";
-
+// @ts-ignore
 import * as am4core from "@amcharts/amcharts4/core";
+// @ts-ignore
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import am4themes_dark from "@amcharts/amcharts4/themes/animated";
@@ -149,113 +150,7 @@ export class ResultComponent implements OnInit, OnDestroy {
         'hideCredits': true,
     };
 
-    barChartConfig1 = {
-        "type": "serial",
-        "theme": "none",
-        "legend": {
-            "horizontalGap": 10,
-            "maxColumns": 1,
-            "position": "right",
-            "useGraphSettings": true,
-            "markerSize": 10
-        },
-        "dataProvider": [{
-            "year": 2003,
-            "europe": 2.5,
-            "namerica": 2.5,
-            "asia": 2.1,
-            "lamerica": 0.3,
-            "meast": 0.2,
-            "africa": 0.1
-        }, {
-            "year": 2004,
-            "europe": 2.6,
-            "namerica": 2.7,
-            "asia": 2.2,
-            "lamerica": 0.3,
-            "meast": 0.3,
-            "africa": 0.1
-        }, {
-            "year": 2005,
-            "europe": 2.8,
-            "namerica": 2.9,
-            "asia": 2.4,
-            "lamerica": 0.3,
-            "meast": 0.3,
-            "africa": 0.1
-        }],
-        "valueAxes": [{
-            "stackType": "regular",
-            "axisAlpha": 0.3,
-            "gridAlpha": 0
-        }],
-        "graphs": [{
-            "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
-            "fillAlphas": 0.8,
-            "labelText": "[[value]]",
-            "lineAlpha": 0.3,
-            "title": "Europe",
-            "type": "column",
-            "color": "#000000",
-            "valueField": "europe"
-        }, {
-            "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
-            "fillAlphas": 0.8,
-            "labelText": "[[value]]",
-            "lineAlpha": 0.3,
-            "title": "North America",
-            "type": "column",
-            "color": "#000000",
-            "valueField": "namerica"
-        }, {
-            "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
-            "fillAlphas": 0.8,
-            "labelText": "[[value]]",
-            "lineAlpha": 0.3,
-            "title": "Asia-Pacific",
-            "type": "column",
-            "color": "#000000",
-            "valueField": "asia"
-        }, {
-            "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
-            "fillAlphas": 0.8,
-            "labelText": "[[value]]",
-            "lineAlpha": 0.3,
-            "title": "Latin America",
-            "type": "column",
-            "color": "#000000",
-            "valueField": "lamerica"
-        }, {
-            "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
-            "fillAlphas": 0.8,
-            "labelText": "[[value]]",
-            "lineAlpha": 0.3,
-            "title": "Middle-East",
-            "type": "column",
-            "color": "#000000",
-            "valueField": "meast"
-        }, {
-            "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
-            "fillAlphas": 0.8,
-            "labelText": "[[value]]",
-            "lineAlpha": 0.3,
-            "title": "Africa",
-            "type": "column",
-            "color": "#000000",
-            "valueField": "africa"
-        }],
-        "categoryField": "year",
-        "categoryAxis": {
-            "gridPosition": "start",
-            "axisAlpha": 0,
-            "gridAlpha": 0,
-            "position": "left"
-        },
-        "export": {
-            "enabled": true
-        }
 
-    }
 
 
 
@@ -296,7 +191,6 @@ export class ResultComponent implements OnInit, OnDestroy {
 
       // bar charts test
 
-      this.drawBarChart();
       this.drawBarChartsAm4();
 
       // this.setStockChart();
@@ -329,9 +223,7 @@ export class ResultComponent implements OnInit, OnDestroy {
         this.redrawFirstPieChart();
   }
 
-  drawBarChart() {
-        // this.barChart1 = this.AmCharts.makeChart('bardiv1', this.barChartConfig1)
-  }
+
   drawBarChartsAm4() {
 
 // Themes end
