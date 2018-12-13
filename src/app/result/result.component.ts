@@ -3,14 +3,28 @@ import { AmChartsService} from '@amcharts/amcharts3-angular';
 import {CAChartConfig} from '../global/chartConfig';
 import {ActivatedRoute} from "@angular/router";
 import {ResultService} from "../_services/result.service";
-// @ts-ignore
+
+
+
+
 import * as am4core from "@amcharts/amcharts4/core";
-// @ts-ignore
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
-import am4themes_dark from "@amcharts/amcharts4/themes/animated";
-am4core.useTheme(am4themes_dark);
+
 am4core.useTheme(am4themes_animated);
+import am4themes_dataviz from "@amcharts/amcharts4/themes/animated";
+// am4core.useTheme(am4themes_dark);
+am4core.useTheme(am4themes_dataviz);
+
+
+
+// // @ts-ignore
+// import * as am4core from "@amcharts/amcharts4/core";
+// // @ts-ignore
+// import * as am4charts from "@amcharts/amcharts4/charts";
+// import am4themes_animated from "@amcharts/amcharts4/themes/animated";
+//
+// am4core.useTheme(am4themes_animated);
 
 
 
@@ -34,26 +48,26 @@ export class ResultComponent implements OnInit, OnDestroy {
    chartData4 = [];
    jobId : string;
    reload: boolean;
-   pieChart1Loaded=  false;
-    pieChart2Loaded=  false;
+   pieChart1Loaded =  false;
+   pieChart2Loaded =  false;
+   barChart1Loaded = false;
    refreshIntervalId: any;
 
    pieChartDataSet1 = [
        {
            'sentiment': 'positive',
-           'value': '0.0759440101828659'
+           'value': '1.759440101828659',
+           'color': '#70ad47'
        },
        {
            'sentiment': 'negative',
-           'value': '1.2069939565844834'
-       },
-       {
-           'sentiment': 'neutral',
-           'value': '3.498561769723892'
+           'value': '1.2069939565844834',
+           'color': '#f5422e'
        },
        {
            'sentiment': 'mixed',
-           'value': '0.21850025688763708'
+           'value': '0.21850025688763708',
+           'color': '#ffc000'
        }
    ]
 
@@ -61,19 +75,18 @@ export class ResultComponent implements OnInit, OnDestroy {
     pieChartDataSet2 = [
         {
             'sentiment': 'positive',
-            'value': '0.8584888086043065'
+            'value': '0.8584888086043065',
+            'color': '#7ab537'
         },
         {
             'sentiment': 'negative',
-            'value': '1.3825850707653444'
-        },
-        {
-            'sentiment': 'neutral',
-            'value': '7.518721833825111'
+            'value': '1.3825850707653444',
+            'color': '#fd411b'
         },
         {
             'sentiment': 'mixed',
-            'value': '0.24020433775149286'
+            'value': '0.24020433775149286',
+            'color': '#9e9e9e'
         }
     ];
 
@@ -165,35 +178,42 @@ export class ResultComponent implements OnInit, OnDestroy {
     }
 
   ngOnInit() {
-     //
-     //  this.pieChartConfig1.legend['valueFunction'] = function (dataItem, label) {
-     //      let str = '';
-     //      const percent = dataItem.percents.toFixed(2);
-     //      if (percent === 0 || percent === '0.00') {
-     //          str += ' (<0.01%)';
-     //      } else {
-     //          str += ' (' + percent + '%)';
-     //      }
-     //      return str;
-     //  };
-     //
-     // this.pieChartConfig2.legend['valueFunction'] = function (dataItem, label) {
-     //      let str = '';
-     //      const percent = dataItem.percents.toFixed(2);
-     //      if (percent === 0 || percent === '0.00') {
-     //          str += ' (<0.01%)';
-     //      } else {
-     //          str += ' (' + percent + '%)';
-     //      }
-     //      return str;
-     //  };
-      // this.pieChart1 = this.AmCharts.makeChart('piediv1', this.pieChartConfig1);
-      // this.pieChart2 = this.AmCharts.makeChart('piediv2', this.pieChartConfig2);
-      // this.loadPieDataSet2();
 
-      // bar charts test
+        // DUMMY  PIE CHARTS
+      setTimeout(() => {
+          // this.pieChart1Loaded
+          this.pieChart1Loaded = true;
+          this.pieChart2Loaded = true;
+          this.pieChartConfig1.legend['valueFunction'] = function (dataItem, label) {
+              let str = '';
+              const percent = dataItem.percents.toFixed(2);
+              if (percent === 0 || percent === '0.00') {
+                  str += ' (<0.01%)';
+              } else {
+                  str += ' (' + percent + '%)';
+              }
+              return str;
+          };
 
-      // this.drawBarChartsAm4();
+          this.pieChartConfig2.legend['valueFunction'] = function (dataItem, label) {
+              let str = '';
+              const percent = dataItem.percents.toFixed(2);
+              if (percent === 0 || percent === '0.00') {
+                  str += ' (<0.01%)';
+              } else {
+                  str += ' (' + percent + '%)';
+              }
+              return str;
+          };
+          this.pieChart1 = this.AmCharts.makeChart('piediv1', this.pieChartConfig1);
+          this.pieChart2 = this.AmCharts.makeChart('piediv2', this.pieChartConfig2);
+          // this.loadPieDataSet2();
+      }, 3000)
+
+
+      // BAR charts DUMMY
+
+      this.testAm4();
 
       // this.setStockChart();
 
@@ -207,94 +227,114 @@ export class ResultComponent implements OnInit, OnDestroy {
 
        // main functinality
 
-      this.drawAllCharts();
+      // this.drawAllPieCharts();
+      //
+      // this.refreshIntervalId = setInterval(() => {
+      //     this.reDrawAllCharts();
+      // }, 10000);
 
-      this.refreshIntervalId = setInterval(() => {
-          this.reDrawAllCharts();
-      }, 10000);
 
 
   }
 
-  drawAllCharts() {
+  drawAllPieCharts() {
         this.drawFirstPieChartData();
         this.drawSecondPieChartData();
   }
 
   reDrawAllCharts() {
-        this.redrawFirstPieChart();
-        this.redrawSecondPieChart();
+        // this.redrawFirstPieChart();
+        // this.redrawSecondPieChart();
   }
 
 
-  drawBarChartsAm4() {
 
-// Themes end
+  testAm4() {
 
-// Create chart instance
+        setTimeout(() => {
+            this.barChart1Loaded = true;
+                chart.validateData();
+        }, 3000);
+       // this.barChart1Loaded = true;
+      // Create chart instance
       let chart = am4core.create("bardiv1", am4charts.XYChart);
+      let dupData =   [
+          {
+              "followersCount": "500-1000",
+              "positive": "0.03620039718225598",
+              "negative": "5.915166693739593E-4",
+              "mixed": "9.349303727503866E-4"
+          },
+          {
+              "followersCount": "5k-20k",
+              "positive": "0.8786949515342712",
+              "negative": "2.9988877940922976E-4",
+              "mixed": "0.005021605174988508"
+          },
+          {
+              "followersCount": "0-50",
+              "positive": "0.9382591843605042",
+              "negative": "0.004395967116579413",
+              "mixed": "0.010882709408178926"
+          },
+          {
+              "followersCount": "50-200",
+              "positive": "0.6667218068614602",
+              "negative": "0.5084130666218698",
+              "mixed": "0.21073180862003937"
+          },
+          {
+              "followersCount": "200-500",
+              "positive": "0.06209923420101404",
+              "negative": "0.5142109232256189",
+              "mixed": "0.13702206229208969"
+          }
+      ];
 
-      let dupData = [{
-          "year": "2016",
-          "europe": 1.5,
-          "namerica": 1.5,
-          "asia": 1.1,
-          "lamerica": 2.3,
-          "meast": 1.2,
-          "africa": 1.1
-      }, {
-          "year": "2017",
-          "europe": 2.6,
-          "namerica": 2.7,
-          "asia": 2.2,
-          "lamerica": 0.3,
-          "meast": 0.3,
-          "africa": 0.1
-      }, {
-          "year": "2018",
-          "europe": 2.8,
-          "namerica": 2.9,
-          "asia": 2.4,
-          "lamerica": 0.3,
-          "meast": 0.3,
-          "africa": 0.1
-      }];
 // Add data
+      // Add data
       chart.data = [{
-          "year": "2016",
-          "europe": 2.5,
-          "namerica": 2.5,
-          "asia": 2.1,
-          "lamerica": 0.3,
-          "meast": 0.2,
-          "africa": 0.1
+          "followersCount": "0-100",
+          "positive": 0.3,
+          "negative": 0.5,
+          "mixed": 0.2
       }, {
-          "year": "2017",
-          "europe": 2.6,
-          "namerica": 2.7,
-          "asia": 2.2,
-          "lamerica": 0.3,
-          "meast": 0.3,
-          "africa": 0.1
+          "followersCount": "100-200",
+          "positive": 0.1,
+          "negative": 0.2,
+          "mixed": 0.7
       }, {
-          "year": "2018",
-          "europe": 2.8,
-          "namerica": 2.9,
-          "asia": 2.4,
-          "lamerica": 0.3,
-          "meast": 0.3,
-          "africa": 0.1
+          "followersCount": "200-500",
+          "positive": 0.4,
+          "negative": 0.5,
+          "mixed": 0.1
+      }, {
+          "followersCount": "500-1000",
+          "positive": 0.6,
+          "negative": 0.3,
+          "mixed": 0.1
+      },{
+          "followersCount": "1000-2000",
+          "positive": 0.3,
+          "negative": 0.5,
+          "mixed": 0.2
+      }, {
+          "followersCount": "2000-20",
+          "positive": 0.1,
+          "negative": 0.2,
+          "mixed": 0.7
       }];
-
+        chart.data = dupData;
       chart.legend = new am4charts.Legend();
       chart.legend.position = "right";
 
 // Create axes
-      let categoryAxis = chart.yAxes.push(new am4charts.CategoryAxis());
-      categoryAxis.dataFields.category = "year";
+      var categoryAxis = chart.yAxes.push(new am4charts.CategoryAxis());
+      categoryAxis.dataFields.category = "followersCount";
       categoryAxis.renderer.grid.template.opacity = 0;
 
-      let valueAxis = chart.xAxes.push(new am4charts.ValueAxis());
+
+      var valueAxis = chart.xAxes.push(new am4charts.ValueAxis());
       valueAxis.min = 0;
       valueAxis.renderer.grid.template.opacity = 0;
       valueAxis.renderer.ticks.template.strokeOpacity = 0.5;
@@ -303,33 +343,38 @@ export class ResultComponent implements OnInit, OnDestroy {
       valueAxis.renderer.line.strokeOpacity = 0.5;
       valueAxis.renderer.baseGrid.disabled = true;
       valueAxis.renderer.minGridDistance = 40;
+      valueAxis.calculateTotals = true;
 
 // Create series
-      function createSeries(field, name) {
-          let series = chart.series.push(new am4charts.ColumnSeries());
+      function createSeries(field, name, color) {
+          var series = chart.series.push(new am4charts.ColumnSeries());
           series.dataFields.valueX = field;
-          series.dataFields.categoryY = "year";
+          series.dataFields.categoryY = "followersCount";
           series.stacked = true;
           series.name = name;
+          series.dataFields.valueYShow = "totalPercent";
+          series.columns.template.configField = "color";
+          series.columns.template.tooltipText =
+              "{name}: {valueX.totalPercent.formatNumber('#.00')}%";
+          // series.columns.template.configField = color;
+          // series.slices.template.fill = color;
 
-          let labelBullet = series.bullets.push(new am4charts.LabelBullet());
+          var labelBullet = series.bullets.push(new am4charts.LabelBullet());
           labelBullet.locationX = 0.5;
-          labelBullet.label.text = "{valueX}";
+          labelBullet.label.text = "{valueX.totalPercent.formatNumber('#.00')}% ";
           labelBullet.label.fill = am4core.color("#fff");
+          // labelBullet.label.text = "{valueY.totalPercent.formatNumber('#.00')}%";
       }
 
-      createSeries("europe", "Europe");
-      createSeries("namerica", "North America");
-      createSeries("asia", "Asia");
-      createSeries("lamerica", "Latin America");
-      createSeries("meast", "Middle East");
-      createSeries("africa", "Africa");
+      createSeries("positive", "Positive","#b1ff90");
+      createSeries("negative", "Negative", "#9872ff");
+      createSeries("mixed", "Mixed", "#ff47ae");
 
-
-      setTimeout(() => {
-          chart.data = dupData;
-          chart.validateData();
-      }, 3000)
+      chart.scrollbarY = new am4core.Scrollbar();
+      // setTimeout(() => {
+      //     chart.data = dupData;
+      //     chart.validateData();
+      // }, 10000);
 
   }
 
@@ -338,29 +383,18 @@ export class ResultComponent implements OnInit, OnDestroy {
          var newFetchedData = res['body'];
          if (newFetchedData.length > 0) {
              this.pieChart1Loaded = true;
+             this.pieChartConfig1.legend['valueFunction'] = function (dataItem, label) {
+                 let str = '';
+                 const percent = dataItem.percents.toFixed(2);
+                 if (percent === 0 || percent === '0.00') {
+                     str += ' (<0.01%)';
+                 } else {
+                     str += ' (' + percent + '%)';
+                 }
+                 return str;
+             };
+             this.pieChart1 = this.AmCharts.makeChart('piediv1', this.pieChartConfig1);
          }
-         this.pieChartConfig1.legend['valueFunction'] = function (dataItem, label) {
-             let str = '';
-             const percent = dataItem.percents.toFixed(2);
-             if (percent === 0 || percent === '0.00') {
-                 str += ' (<0.01%)';
-             } else {
-                 str += ' (' + percent + '%)';
-             }
-             return str;
-         };
-         // this.pieChartConfig2.legend['valueFunction'] = function (dataItem, label) {
-         //     let str = '';
-         //     const percent = dataItem.percents.toFixed(2);
-         //     if (percent === 0 || percent === '0.00') {
-         //         str += ' (<0.01%)';
-         //     } else {
-         //         str += ' (' + percent + '%)';
-         //     }
-         //     return str;
-         // };
-         this.pieChart1 = this.AmCharts.makeChart('piediv1', this.pieChartConfig1);
-         console.log(res);
      });
 
   }
@@ -383,29 +417,18 @@ export class ResultComponent implements OnInit, OnDestroy {
             var newFetchedData = res['body'];
             if (newFetchedData.length > 0) {
                 this.pieChart2Loaded = true;
+                this.pieChartConfig2.legend['valueFunction'] = function (dataItem, label) {
+                    let str = '';
+                    const percent = dataItem.percents.toFixed(2);
+                    if (percent === 0 || percent === '0.00') {
+                        str += ' (<0.01%)';
+                    } else {
+                        str += ' (' + percent + '%)';
+                    }
+                    return str;
+                };
+                this.pieChart2 = this.AmCharts.makeChart('piediv2', this.pieChartConfig2);
             }
-            // this.pieChartConfig1.legend['valueFunction'] = function (dataItem, label) {
-            //     let str = '';
-            //     const percent = dataItem.percents.toFixed(2);
-            //     if (percent === 0 || percent === '0.00') {
-            //         str += ' (<0.01%)';
-            //     } else {
-            //         str += ' (' + percent + '%)';
-            //     }
-            //     return str;
-            // };
-            this.pieChartConfig2.legend['valueFunction'] = function (dataItem, label) {
-                let str = '';
-                const percent = dataItem.percents.toFixed(2);
-                if (percent === 0 || percent === '0.00') {
-                    str += ' (<0.01%)';
-                } else {
-                    str += ' (' + percent + '%)';
-                }
-                return str;
-            };
-            this.pieChart2 = this.AmCharts.makeChart('piediv2', this.pieChartConfig2);
-            console.log(res);
         });
 
     }
@@ -413,7 +436,6 @@ export class ResultComponent implements OnInit, OnDestroy {
     redrawSecondPieChart() {
         this.resultService.getSecondPieChartData(this.jobId).subscribe(res => {
             let newFetchedData = res['body'];
-            console.log(res);
             this.AmCharts.updateChart(this.pieChart2, () => {
                 // Change whatever properties you want
                 this.pieChart2.dataProvider = newFetchedData;
@@ -863,7 +885,15 @@ export class ResultComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         clearInterval(this.refreshIntervalId);
-        this.pieChart1.clear();
+        if (this.pieChart1) {
+            this.pieChart1.clear();
+        }
+        if (this.pieChart2) {
+            this.pieChart2.clear();
+        }
+        if (this.barChart1) {
+            this.barChart1.clear();
+        }
     }
 
 }

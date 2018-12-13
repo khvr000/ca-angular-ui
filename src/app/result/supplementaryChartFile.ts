@@ -1,5 +1,63 @@
 import {CAChartConfig} from "../global/chartConfig";
 
+
+let dupData = [{
+    "year": "0-100",
+    "positive": 0.1,
+    "negative": 0.2,
+    "mixed": 0.7
+}, {
+    "year": "100-200",
+    "positive": 0.5,
+    "negative": 0.3,
+    "mixed": 0.2
+}, {
+    "year": "200-300",
+    "positive": 0.4,
+    "negative": 0.5,
+    "mixed": 0.1
+}, {
+    "year": ">300",
+    "positive": 0.6,
+    "negative": 0.3,
+    "mixed": 0.1
+}];
+// Add data
+var chartdata = [{
+    "year": "0-100",
+    "positive": 2.3,
+    "negative": 3.5,
+    "mixed": 4.2
+}, {
+    "year": "100-20",
+    "positive": 0.1,
+    "negative": 0.2,
+    "mixed": 0.7
+}, {
+    "year": "200-300",
+    "positive": 0.4,
+    "negative": 0.5,
+    "mixed": 0.1
+}, {
+    "year": ">300",
+    "positive": 0.6,
+    "negative": 0.3,
+    "mixed": 0.1
+}];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 var activityChartConfig = JSON.parse(JSON.stringify(CAChartConfig.chartConfig['stock']));
 // var stockGraphBody = {
 //     'title': legends[test],
