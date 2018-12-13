@@ -193,7 +193,7 @@ export class ResultComponent implements OnInit, OnDestroy {
 
       // bar charts test
 
-      this.drawBarChartsAm4();
+      // this.drawBarChartsAm4();
 
       // this.setStockChart();
 
