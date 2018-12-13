@@ -34,6 +34,8 @@ export class ResultComponent implements OnInit, OnDestroy {
    chartData4 = [];
    jobId : string;
    reload: boolean;
+   pieChart1Loaded=  false;
+    pieChart2Loaded=  false;
    refreshIntervalId: any;
 
    pieChartDataSet1 = [
@@ -163,31 +165,31 @@ export class ResultComponent implements OnInit, OnDestroy {
     }
 
   ngOnInit() {
-
-      this.pieChartConfig1.legend['valueFunction'] = function (dataItem, label) {
-          let str = '';
-          const percent = dataItem.percents.toFixed(2);
-          if (percent === 0 || percent === '0.00') {
-              str += ' (<0.01%)';
-          } else {
-              str += ' (' + percent + '%)';
-          }
-          return str;
-      };
-
-     this.pieChartConfig2.legend['valueFunction'] = function (dataItem, label) {
-          let str = '';
-          const percent = dataItem.percents.toFixed(2);
-          if (percent === 0 || percent === '0.00') {
-              str += ' (<0.01%)';
-          } else {
-              str += ' (' + percent + '%)';
-          }
-          return str;
-      };
-      this.pieChart1 = this.AmCharts.makeChart('piediv1', this.pieChartConfig1);
-      this.pieChart2 = this.AmCharts.makeChart('piediv2', this.pieChartConfig2);
-      this.loadPieDataSet2();
+     //
+     //  this.pieChartConfig1.legend['valueFunction'] = function (dataItem, label) {
+     //      let str = '';
+     //      const percent = dataItem.percents.toFixed(2);
+     //      if (percent === 0 || percent === '0.00') {
+     //          str += ' (<0.01%)';
+     //      } else {
+     //          str += ' (' + percent + '%)';
+     //      }
+     //      return str;
+     //  };
+     //
+     // this.pieChartConfig2.legend['valueFunction'] = function (dataItem, label) {
+     //      let str = '';
+     //      const percent = dataItem.percents.toFixed(2);
+     //      if (percent === 0 || percent === '0.00') {
+     //          str += ' (<0.01%)';
+     //      } else {
+     //          str += ' (' + percent + '%)';
+     //      }
+     //      return str;
+     //  };
+      // this.pieChart1 = this.AmCharts.makeChart('piediv1', this.pieChartConfig1);
+      // this.pieChart2 = this.AmCharts.makeChart('piediv2', this.pieChartConfig2);
+      // this.loadPieDataSet2();
 
       // bar charts test
 
@@ -205,22 +207,23 @@ export class ResultComponent implements OnInit, OnDestroy {
 
        // main functinality
 
-      // this.drawAllCharts();
-      //
-      // this.refreshIntervalId = setInterval(() => {
-      //     this.reDrawAllCharts();
-      // }, 10000);
+      this.drawAllCharts();
+
+      this.refreshIntervalId = setInterval(() => {
+          this.reDrawAllCharts();
+      }, 10000);
 
 
   }
 
   drawAllCharts() {
         this.drawFirstPieChartData();
-
+        this.drawSecondPieChartData();
   }
 
   reDrawAllCharts() {
         this.redrawFirstPieChart();
+        this.redrawSecondPieChart();
   }
 
 
@@ -330,9 +333,32 @@ export class ResultComponent implements OnInit, OnDestroy {
 
   }
 
-  drawFirstPieChartData () {
+    drawFirstPieChartData () {
      this.resultService.getFirstPieChartData(this.jobId).subscribe(res => {
          var newFetchedData = res['body'];
+         if (newFetchedData.length > 0) {
+             this.pieChart1Loaded = true;
+         }
+         this.pieChartConfig1.legend['valueFunction'] = function (dataItem, label) {
+             let str = '';
+             const percent = dataItem.percents.toFixed(2);
+             if (percent === 0 || percent === '0.00') {
+                 str += ' (<0.01%)';
+             } else {
+                 str += ' (' + percent + '%)';
+             }
+             return str;
+         };
+         // this.pieChartConfig2.legend['valueFunction'] = function (dataItem, label) {
+         //     let str = '';
+         //     const percent = dataItem.percents.toFixed(2);
+         //     if (percent === 0 || percent === '0.00') {
+         //         str += ' (<0.01%)';
+         //     } else {
+         //         str += ' (' + percent + '%)';
+         //     }
+         //     return str;
+         // };
          this.pieChart1 = this.AmCharts.makeChart('piediv1', this.pieChartConfig1);
          console.log(res);
      });
@@ -350,6 +376,51 @@ export class ResultComponent implements OnInit, OnDestroy {
 
       });
   }
+
+
+    drawSecondPieChartData () {
+        this.resultService.getSecondPieChartData(this.jobId).subscribe(res => {
+            var newFetchedData = res['body'];
+            if (newFetchedData.length > 0) {
+                this.pieChart2Loaded = true;
+            }
+            // this.pieChartConfig1.legend['valueFunction'] = function (dataItem, label) {
+            //     let str = '';
+            //     const percent = dataItem.percents.toFixed(2);
+            //     if (percent === 0 || percent === '0.00') {
+            //         str += ' (<0.01%)';
+            //     } else {
+            //         str += ' (' + percent + '%)';
+            //     }
+            //     return str;
+            // };
+            this.pieChartConfig2.legend['valueFunction'] = function (dataItem, label) {
+                let str = '';
+                const percent = dataItem.percents.toFixed(2);
+                if (percent === 0 || percent === '0.00') {
+                    str += ' (<0.01%)';
+                } else {
+                    str += ' (' + percent + '%)';
+                }
+                return str;
+            };
+            this.pieChart2 = this.AmCharts.makeChart('piediv2', this.pieChartConfig2);
+            console.log(res);
+        });
+
+    }
+
+    redrawSecondPieChart() {
+        this.resultService.getSecondPieChartData(this.jobId).subscribe(res => {
+            let newFetchedData = res['body'];
+            console.log(res);
+            this.AmCharts.updateChart(this.pieChart2, () => {
+                // Change whatever properties you want
+                this.pieChart2.dataProvider = newFetchedData;
+            });
+
+        });
+    }
 
   fetchSecondPieChartData () {
         this.resultService.getFirstPieChartData(this.jobId).subscribe(res => {
