@@ -29,8 +29,8 @@
                 <!--&lt;!&ndash;</svg>&ndash;&gt;-->
             <!--</a>-->
         <!--</li>-->
-        <li class="ml-2">
-            <a routerLink="/home/search" class="active">
+        <li class="ml-4">
+            <a routerLink="/home/search" class="">
                 <i class="fas fa-search ssiconsvg"></i>
                 <span>SEARCH</span>
             </a>
@@ -38,8 +38,11 @@
 
     </ul>
     <ul class="logOut">
-        <li>
-            <p><a (click)="logout()" [routerLink]="['/login']">Logout</a></p>
+        <li class="mr-4">
+            <a (click)="logout()" [routerLink]="['/login']">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
         </li>
     </ul>
 </nav>

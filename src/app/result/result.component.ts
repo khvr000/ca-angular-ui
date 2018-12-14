@@ -361,7 +361,7 @@ export class ResultComponent implements OnInit, OnDestroy {
 
           var labelBullet = series.bullets.push(new am4charts.LabelBullet());
           labelBullet.locationX = 0.5;
-          labelBullet.label.text = "{valueX.totalPercent.formatNumber('#.00')}% ";
+          labelBullet.label.text = "{valueX.formatNumber('#.00')}";
           labelBullet.label.fill = am4core.color("#fff");
           // labelBullet.label.text = "{valueY.totalPercent.formatNumber('#.00')}%";
       }
