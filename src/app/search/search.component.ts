@@ -107,9 +107,8 @@ export class SearchComponent implements OnInit {
                  private router: Router) {}
 
     ngOnInit() {
-        this.loading = true;
         // this.dataSource.paginator = this.paginator;
-
+        this.loading = true;
         this.userDetails = JSON.parse(localStorage.getItem('userDetails'));
         // this.dataSource =  new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
        // this.dataSource.paginator = this.paginator;
@@ -118,31 +117,37 @@ export class SearchComponent implements OnInit {
     }
     getJobDetails() {
         this.appService.getJobIds(this.userDetails).subscribe(res => {
-           console.log('response', typeof res);
+
+            this.loading = false;
+            console.log('response', typeof res);
            const peopleArray = Object.keys(res).map(i => res[i]);
            console.log( peopleArray);
            ELEMENT_DATA = peopleArray;
            console.log('Elements Data', ELEMENT_DATA);
+
            this.dataSource =  new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
            // this.dataSource = ELEMENT_DATA;
            this.dataSource.paginator = this.paginator;
-           this.loading = true;
+
         });
     }
     setSearchtrackWord(trackWord: string) {
-        this.loading = false;
-        this.appService.setSearchtrackWord(trackWord).subscribe(res => {
-            this.responseJobId = res;
-            this.loading = true;
-            console.log(this.userDetails);
-            var receivedJobDetails = {
-                'username': this.userDetails['username'],
-                'jobId': this.responseJobId,
-                'trackWord': trackWord,
-                'time': JSON.stringify(new Date())
-            }
-            this.saveJobId(receivedJobDetails);
-        });
+        if (trackWord.length > 0) {
+            this.loading = false;
+            this.appService.setSearchtrackWord(trackWord).subscribe(res => {
+                this.responseJobId = res;
+                this.loading = true;
+                console.log(this.userDetails);
+                var receivedJobDetails = {
+                    'username': this.userDetails['username'],
+                    'jobId': this.responseJobId,
+                    'trackWord': trackWord,
+                    'time': JSON.stringify(new Date())
+                }
+                this.saveJobId(receivedJobDetails);
+            });
+        }
+
     }
     getTimeInFormat(time){
         return Date.parse(time);

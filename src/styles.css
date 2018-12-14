@@ -21,3 +21,7 @@ body
 mat-paginator-container {
     width: 86%;
 }
+
+.content-router {
+    min-height: 470px;
+}

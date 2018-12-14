@@ -171,3 +171,8 @@ mat-paginator {
     -webkit-user-select: none;
     -ms-user-select: none;
 }
+
+a:hover {
+    color: #28a745 !important;
+    cursor: pointer;
+}
