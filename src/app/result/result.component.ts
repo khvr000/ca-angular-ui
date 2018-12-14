@@ -408,6 +408,7 @@ export class ResultComponent implements OnInit, OnDestroy {
     drawFirstPieChartData () {
      this.resultService.getFirstPieChartData(this.jobId).subscribe(res => {
          var newFetchedData = res['body']['sentimentArray'];
+         this.pieChart1Loaded = true;
          this.pieChartConfig1.legend['valueFunction'] = function (dataItem, label) {
              let str = '';
              const percent = dataItem.percents.toFixed(2);
@@ -419,9 +420,9 @@ export class ResultComponent implements OnInit, OnDestroy {
              return str;
          };
          this.pieChart1 = this.AmCharts.makeChart('piediv1', this.pieChartConfig1);
-         if (newFetchedData.length > 0) {
-             this.pieChart1Loaded = true;
-         }
+         // if (newFetchedData.length > 0) {
+         //
+         // }
      });
 
   }
@@ -473,9 +474,9 @@ export class ResultComponent implements OnInit, OnDestroy {
     redrawFirstPieChart() {
         this.resultService.getFirstPieChartData(this.jobId).subscribe(res => {
             let newFetchedData = res['body']['sentimentArray'];
-            if (newFetchedData.length > 0) {
-                this.pieChart1Loaded = true;
-            }
+            // if (newFetchedData.length > 0) {
+            //     this.pieChart1Loaded = true;
+            // }
             console.log(res);
             if (this.pieChart1) {
                 this.AmCharts.updateChart(this.pieChart1, () => {
