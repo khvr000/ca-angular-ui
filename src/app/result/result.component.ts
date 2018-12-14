@@ -213,7 +213,7 @@ export class ResultComponent implements OnInit, OnDestroy {
 
       // BAR charts DUMMY
 
-      // this.testAm4();
+      this.testAm4();
 
       // this.setStockChart();
 
@@ -233,7 +233,7 @@ export class ResultComponent implements OnInit, OnDestroy {
       //     this.reDrawAllCharts();
       // }, 10000);
 
-    this.drawStackBarChart();
+    // this.drawStackBarChart();
 
   }
 
@@ -276,9 +276,9 @@ export class ResultComponent implements OnInit, OnDestroy {
                     series.dataFields.valueYShow = "totalPercent";
                     series.columns.template.tooltipText =
                         "{name}: {valueX.totalPercent.formatNumber('#.00')}%";
-                    series.columns.template.fill = color;
-                    // @ts-ignore
-                    series.columns.template.stroke = "#ff5ea0";
+                    // series.columns.template.fill = color;
+                    // // @ts-ignore
+                    // series.columns.template.stroke = "#ff5ea0";
 
                     var labelBullet = series.bullets.push(new am4charts.LabelBullet());
                     labelBullet.locationX = 0.5;
@@ -482,9 +482,9 @@ export class ResultComponent implements OnInit, OnDestroy {
             series.dataFields.valueYShow = "totalPercent";
             series.columns.template.tooltipText =
                 "{name}: {valueX.totalPercent.formatNumber('#.00')}%";
-            series.columns.template.fill = color;
-            // @ts-ignore
-            series.columns.template.stroke = "#ff5ea0";
+            // series.columns.template.fill = color;
+            // // @ts-ignore
+            // series.columns.template.stroke = "#ff5ea0";
 
             var labelBullet = series.bullets.push(new am4charts.LabelBullet());
             labelBullet.locationX = 0.5;

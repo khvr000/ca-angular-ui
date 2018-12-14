@@ -22,11 +22,15 @@
 
             <div class="col-sm-6">
                 <div  [style.display]="(pieChart1Loaded)?'inherit': 'none' "class="piecharts block_style1">
-                    <h5 class="pie-chart-heading">Analysis for all Accounts</h5>
+                    <h5 class="pie-chart-heading">Analysis for all Accounts
+                        <img src="assets/bird.png">
+                    </h5>
                     <div id="piediv1"></div>
                 </div>
                 <div  *ngIf="!pieChart1Loaded" class="piecharts block_style1">
-                    <h5 class="pie-chart-heading">Analysis for all Accounts</h5>
+                    <h5 class="pie-chart-heading">Analysis for all Accounts
+                        <img src="assets/bird.png">
+                    </h5>
                     <div class="response-loading-div">
                         <img src="assets/loading.gif" alt="Loading...">
                         <span>ANALYSING</span>
@@ -35,11 +39,15 @@
             </div>
             <div class="col-sm-6">
                 <div [style.display]="(pieChart2Loaded)?'inherit': 'none' " class="piecharts block_style1">
-                    <h5 class="pie-chart-heading">Analysis for Verified Accounts</h5>
+                    <h5 class="pie-chart-heading">Analysis for Verified Accounts
+                        <img src="assets/blueTick.png">
+                    </h5>
                     <div id="piediv2"></div>
                 </div>
                 <div  *ngIf="!pieChart2Loaded" class="piecharts block_style1">
-                    <h5 class="pie-chart-heading">Analysis for Verified Accounts</h5>
+                    <h5 class="pie-chart-heading">Analysis for Verified Accounts
+                        <img src="assets/blueTick.png">
+                    </h5>
                     <div class="response-loading-div">
                         <img src="assets/loading.gif" alt="Loading...">
                         <span>ANALYSING</span>
@@ -52,12 +60,15 @@
     <div class="row">
         <div class="col-sm-12 " >
             <div [style.display]="(barStackedChartLoaded)?'inherit': 'none' " class="block_style1_bar ">
-                <h5 class="pie-chart-heading">Sentiment Based on number of followers <i class="fa fa-twitter-square" aria-hidden="true"></i>
+                <h5 class="pie-chart-heading">Sentiment Based on number of followers
+                    <img src="assets/follow.jpg">
                 </h5>
                 <div id="bardiv1"></div>
             </div>
             <div *ngIf="!barStackedChartLoaded" class=" block_style1_bar">
-                <h5 class="pie-chart-heading">Sentiment Based on number of followers </h5>
+                <h5 class="pie-chart-heading">Sentiment Based on number of followers
+                    <img src="assets/follow.jpg">
+                </h5>
                 <div class="response-loading-div">
                     <img src="assets/loading.gif" alt="Loading...">
                     <span>ANALYSING</span>

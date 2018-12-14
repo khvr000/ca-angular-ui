@@ -130,8 +130,10 @@ export class SearchComponent implements OnInit {
         });
     }
     setSearchtrackWord(trackWord: string) {
+        this.loading = false;
         this.appService.setSearchtrackWord(trackWord).subscribe(res => {
             this.responseJobId = res;
+            this.loading = true;
             console.log(this.userDetails);
             var receivedJobDetails = {
                 'username': this.userDetails['username'],
