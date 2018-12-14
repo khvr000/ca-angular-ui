@@ -95,6 +95,7 @@ export class SearchComponent implements OnInit {
     currentUser: User;
     users: User[] = [];
     loading = false;
+    dataLenghtNonEmpty =  false;
 
     title = 'ci-angular-ui';
     term;
@@ -117,7 +118,11 @@ export class SearchComponent implements OnInit {
     }
     getJobDetails() {
         this.appService.getJobIds(this.userDetails).subscribe(res => {
-
+                // res
+            var array = JSON.parse(JSON.stringify(res));
+            if (array.length > 0) {
+                this.dataLenghtNonEmpty = true;
+            }
             this.loading = false;
             console.log('response', typeof res);
            const peopleArray = Object.keys(res).map(i => res[i]);

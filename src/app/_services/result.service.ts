@@ -7,6 +7,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 export class ResultService {
 
     pieChartOneUrl = 'https://idjetwuuuk.execute-api.ap-south-1.amazonaws.com/first/graphquery';
+    pieChartBotUrl = 'https://idjetwuuuk.execute-api.ap-south-1.amazonaws.com/first/graphqueryonbotscount';
 
     barStackedChartUrl = 'https://idjetwuuuk.execute-api.ap-south-1.amazonaws.com/first/graphqueryonfollowerscount';
 
@@ -28,9 +29,16 @@ export class ResultService {
         return this.http.post(this.pieChartOneUrl, body);
     }
 
+    getThirdPieChartData (jobId) {
+        const body = {
+            'jobId':  jobId
+        }	;
+        return this.http.post(this.pieChartBotUrl, body);
+    }
+
     getStackBarChartData (jobId) {
         const body = {
-            'jobId' : 'a8b2b460-e199-4089-8fee-1ea41339ba8f'
+            'jobId' : jobId
         }
         return this.http.post(this.barStackedChartUrl, body);
     }

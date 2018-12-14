@@ -20,11 +20,12 @@
     <br>
     <div class="row ">
 
-            <div class="col-sm-6">
+            <div class="col-sm-4">
                 <div  [style.display]="(pieChart1Loaded)?'inherit': 'none' "class="piecharts block_style1">
                     <h5 class="pie-chart-heading">Analysis for all Accounts
                         <img src="assets/bird.png">
                     </h5>
+                    <!--<span class="tweetCount">32569</span>-->
                     <div id="piediv1"></div>
                 </div>
                 <div  *ngIf="!pieChart1Loaded" class="piecharts block_style1">
@@ -37,7 +38,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-4">
                 <div [style.display]="(pieChart2Loaded)?'inherit': 'none' " class="piecharts block_style1">
                     <h5 class="pie-chart-heading">Analysis for Verified Accounts
                         <img src="assets/blueTick.png">
@@ -47,6 +48,24 @@
                 <div  *ngIf="!pieChart2Loaded" class="piecharts block_style1">
                     <h5 class="pie-chart-heading">Analysis for Verified Accounts
                         <img src="assets/blueTick.png">
+                    </h5>
+                    <div class="response-loading-div">
+                        <img src="assets/loading.gif" alt="Loading...">
+                        <span>ANALYSING</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-4">
+                <div  [style.display]="(pieChart3Loaded)?'inherit': 'none' "class="piecharts block_style1">
+                    <h5 class="pie-chart-heading">Analysis for Bots
+                        <img src="assets/botReal.jpg">
+                    </h5>
+                    <div id="piediv3"></div>
+                </div>
+                <div  *ngIf="!pieChart3Loaded" class="piecharts block_style1">
+                    <h5 class="pie-chart-heading">Analysis for all Accounts
+                        <img src="assets/botReal.jpg">
                     </h5>
                     <div class="response-loading-div">
                         <img src="assets/loading.gif" alt="Loading...">

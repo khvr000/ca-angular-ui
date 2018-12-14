@@ -37,6 +37,7 @@ export class ResultComponent implements OnInit, OnDestroy {
 
    pieChart1: any;
    pieChart2: any;
+    pieChart3: any;
    barChart1: any;
    stockChart1: any;
    stockChart2: any;
@@ -50,24 +51,26 @@ export class ResultComponent implements OnInit, OnDestroy {
    reload: boolean;
    pieChart1Loaded =  false;
    pieChart2Loaded =  false;
+   pieChart3Loaded = false;
    barStackedChartLoaded = false;
-   refreshIntervalId: any;
+   refreshIntervalPie: any;
+   refreshIntervalBar: any;
 
    pieChartDataSet1 = [
        {
            'sentiment': 'positive',
            'value': '1.759440101828659',
-           'color': '#70ad47'
+           'color': '#669900'
        },
        {
            'sentiment': 'negative',
            'value': '1.2069939565844834',
-           'color': '#f5422e'
+           'color': '#cc0000'
        },
        {
            'sentiment': 'mixed',
            'value': '0.21850025688763708',
-           'color': '#ffc000'
+           'color': '#ffcc66'
        }
    ]
 
@@ -76,24 +79,37 @@ export class ResultComponent implements OnInit, OnDestroy {
         {
             'sentiment': 'positive',
             'value': '0.8584888086043065',
-            'color': '#7ab537'
+            'color': '#70ad47'
         },
         {
             'sentiment': 'negative',
             'value': '1.3825850707653444',
-            'color': '#fd411b'
+            'color': '#f5422e'
         },
         {
             'sentiment': 'mixed',
             'value': '0.24020433775149286',
-            'color': '#9e9e9e'
+            'color': '#ffcc66'
+        }
+    ];
+
+    pieChartDataSet3 = [
+        {
+            'type': 'Real User',
+            'value': '0.7584888086043065',
+            'color': '#38BEF2'
+        },
+        {
+            'type': 'Bot',
+            'value': '0.3825850707653444',
+            'color': '#3E718A'
         }
     ];
 
 
     pieChartConfig1 = {
         'type': 'pie',
-        'dataProvider': this.pieChartDataSet1,
+        'dataProvider': [],
         'addClassNames': true,
         'marginLeft': -10,
         'labelRadius': -22,
@@ -104,8 +120,8 @@ export class ResultComponent implements OnInit, OnDestroy {
         'titleField':  'sentiment',
         'outlineColor': '#FFFFFF',
         'legend': {
-            'position': 'left',
-            'align': 'center',
+            'position': 'bottom',
+            'align': 'left',
             'marginRight': 5,
             'autoMargins': false,
             'labelText': '[[title]]',
@@ -131,7 +147,7 @@ export class ResultComponent implements OnInit, OnDestroy {
 
     pieChartConfig2 = {
         'type': 'pie',
-        'dataProvider': this.pieChartDataSet1,
+        'dataProvider': [],
         'addClassNames': true,
         'marginLeft': -10,
         'labelRadius': -22,
@@ -142,8 +158,8 @@ export class ResultComponent implements OnInit, OnDestroy {
         'titleField':  'sentiment',
         'outlineColor': '#FFFFFF',
         'legend': {
-            'position': 'right',
-            'align': 'center',
+            'position': 'bottom',
+            'align': 'left',
             'marginRight': 5,
             'autoMargins': false,
             'labelText': '[[title]]',
@@ -151,6 +167,42 @@ export class ResultComponent implements OnInit, OnDestroy {
             'equalWidths': true,
             'valueWidth': 60,
             'labelWidth': 60,
+            'forceWidth': true,
+            'fontSize': 16
+        },
+        'outlineAlpha': 0.8,
+        'outlineThickness': 2,
+        'depth3D': 15,
+        'angle': 30,
+        'colorField': CAChartConfig.chartConfig['piecchartcommon']['colorField'],
+        labelsEnabled: false,
+        'autoMargins': CAChartConfig.chartConfig['piecchartcommon']['autoMargins'],
+        'radius': CAChartConfig.chartConfig['piecchartcommon']['radius'],
+        'hideCredits': true,
+    };
+
+    pieChartConfig3 = {
+        'type': 'pie',
+        'dataProvider': [],
+        'addClassNames': true,
+        'marginLeft': -10,
+        'labelRadius': -22,
+        'percentPrecision': 1,
+        'precision': -1,
+        'startAngle': 0,
+        'valueField': 'value',
+        'titleField':  'type',
+        'outlineColor': '#FFFFFF',
+        'legend': {
+            'position': 'bottom',
+            'align': 'left',
+            'marginRight': 5,
+            'autoMargins': false,
+            'labelText': '[[title]]',
+            'valueText': '[[value]]',
+            'equalWidths': true,
+            'valueWidth': 60,
+            'labelWidth': 70,
             'forceWidth': true,
             'fontSize': 16
         },
@@ -180,40 +232,54 @@ export class ResultComponent implements OnInit, OnDestroy {
   ngOnInit() {
 
         // DUMMY  PIE CHARTS
-      setTimeout(() => {
-          // this.pieChart1Loaded
-          this.pieChart1Loaded = true;
-          this.pieChart2Loaded = true;
-          this.pieChartConfig1.legend['valueFunction'] = function (dataItem, label) {
-              let str = '';
-              const percent = dataItem.percents.toFixed(2);
-              if (percent === 0 || percent === '0.00') {
-                  str += ' (<0.01%)';
-              } else {
-                  str += ' (' + percent + '%)';
-              }
-              return str;
-          };
-
-          this.pieChartConfig2.legend['valueFunction'] = function (dataItem, label) {
-              let str = '';
-              const percent = dataItem.percents.toFixed(2);
-              if (percent === 0 || percent === '0.00') {
-                  str += ' (<0.01%)';
-              } else {
-                  str += ' (' + percent + '%)';
-              }
-              return str;
-          };
-          this.pieChart1 = this.AmCharts.makeChart('piediv1', this.pieChartConfig1);
-          this.pieChart2 = this.AmCharts.makeChart('piediv2', this.pieChartConfig2);
-          // this.loadPieDataSet2();
-      }, 3000)
+      // setTimeout(() => {
+      //     // this.pieChart1Loaded
+      //     this.pieChart1Loaded = true;
+      //     this.pieChart2Loaded = true;
+      //     this.pieChart3Loaded = true;
+      //     this.pieChartConfig1.legend['valueFunction'] = function (dataItem, label) {
+      //         let str = '';
+      //         const percent = dataItem.percents.toFixed(2);
+      //         if (percent === 0 || percent === '0.00') {
+      //             str += ' (<0.01%)';
+      //         } else {
+      //             str += ' (' + percent + '%)';
+      //         }
+      //         return str;
+      //     };
+      //
+      //     this.pieChartConfig2.legend['valueFunction'] = function (dataItem, label) {
+      //         let str = '';
+      //         const percent = dataItem.percents.toFixed(2);
+      //         if (percent === 0 || percent === '0.00') {
+      //             str += ' (<0.01%)';
+      //         } else {
+      //             str += ' (' + percent + '%)';
+      //         }
+      //         return str;
+      //     };
+      //
+      //     this.pieChartConfig3.legend['valueFunction'] = function (dataItem, label) {
+      //         let str = '';
+      //         const percent = dataItem.percents.toFixed(2);
+      //         if (percent === 0 || percent === '0.00') {
+      //             str += ' (<0.01%)';
+      //         } else {
+      //             str += ' (' + percent + '%)';
+      //         }
+      //         return str;
+      //     };
+      //
+      //     this.pieChart1 = this.AmCharts.makeChart('piediv1', this.pieChartConfig1);
+      //     this.pieChart2 = this.AmCharts.makeChart('piediv2', this.pieChartConfig2);
+      //     this.pieChart3 = this.AmCharts.makeChart('piediv3', this.pieChartConfig3);
+      //     // this.loadPieDataSet2();
+      // }, 100)
 
 
       // BAR charts DUMMY
 
-      this.testAm4();
+      // this.testAm4();
 
       // this.setStockChart();
 
@@ -227,13 +293,29 @@ export class ResultComponent implements OnInit, OnDestroy {
 
        // MAIN FUNCTIONALITY
 
-      // this.drawAllPieCharts();
-      //
-      // this.refreshIntervalId = setInterval(() => {
-      //     this.reDrawAllCharts();
-      // }, 10000);
+      this.drawAllPieCharts();
 
-    // this.drawStackBarChart();
+      this.refreshIntervalPie = setInterval(() => {
+          this.reDrawAllPieCharts();
+      }, 5000);
+
+    this.drawStackBarChart();
+
+
+      this.refreshIntervalBar =  setInterval(() => {
+          this.redrawStackBarChart();
+      }, 30000);
+
+  }
+
+
+  redrawStackBarChart() {
+          // chart.data = dupData;
+          this.resultService.getStackBarChartData(this.jobId).subscribe(res => {
+              var newStackedBarData = res['body'];
+              this.barChart1.data = newStackedBarData;
+              this.barChart1.validateData();
+          });
 
   }
 
@@ -241,9 +323,9 @@ export class ResultComponent implements OnInit, OnDestroy {
         this.resultService.getStackBarChartData(this.jobId).subscribe(res => {
             //draw bar charts
             let chart = am4core.create("bardiv1", am4charts.XYChart);
-
+            this.barChart1 = chart;
             chart.data = res['body'];
-            if (res['body'].length > 0) {
+            // if (res['body'].length > 0) {
                 this.barStackedChartLoaded = true;
                 chart.legend = new am4charts.Legend();
                 chart.legend.position = "right";
@@ -292,8 +374,19 @@ export class ResultComponent implements OnInit, OnDestroy {
                 createSeries("mixed", "Mixed", "#ffc000");
 
                 chart.scrollbarY = new am4core.Scrollbar();
+                this.barChart1 = chart;
 
-            }
+                // setTimeout(() => {
+                //     // chart.data = dupData;
+                //     this.resultService.getStackBarChartData(this.jobId).subscribe(res => {
+                //         var newStackedBarData = res['body'];
+                //         chart.data = newStackedBarData;
+                //         chart.validateData();
+                //     })
+                // }, 10000);
+
+            // };
+
 
         })
     }
@@ -301,76 +394,116 @@ export class ResultComponent implements OnInit, OnDestroy {
   drawAllPieCharts() {
         this.drawFirstPieChartData();
         this.drawSecondPieChartData();
+        this.drawThirdPieChartData();
   }
 
-  reDrawAllCharts() {
+  reDrawAllPieCharts() {
         this.redrawFirstPieChart();
         this.redrawSecondPieChart();
+        this.redrawThirdPieChart();
   }
 
 
 
     drawFirstPieChartData () {
      this.resultService.getFirstPieChartData(this.jobId).subscribe(res => {
-         var newFetchedData = res['body'];
+         var newFetchedData = res['body']['sentimentArray'];
+         this.pieChartConfig1.legend['valueFunction'] = function (dataItem, label) {
+             let str = '';
+             const percent = dataItem.percents.toFixed(2);
+             if (percent === 0 || percent === '0.00') {
+                 str += ' (<0.01%)';
+             } else {
+                 str += ' (' + percent + '%)';
+             }
+             return str;
+         };
+         this.pieChart1 = this.AmCharts.makeChart('piediv1', this.pieChartConfig1);
          if (newFetchedData.length > 0) {
              this.pieChart1Loaded = true;
-             this.pieChartConfig1.legend['valueFunction'] = function (dataItem, label) {
-                 let str = '';
-                 const percent = dataItem.percents.toFixed(2);
-                 if (percent === 0 || percent === '0.00') {
-                     str += ' (<0.01%)';
-                 } else {
-                     str += ' (' + percent + '%)';
-                 }
-                 return str;
-             };
-             this.pieChart1 = this.AmCharts.makeChart('piediv1', this.pieChartConfig1);
          }
      });
 
   }
 
-  redrawFirstPieChart() {
-      this.resultService.getFirstPieChartData(this.jobId).subscribe(res => {
-          let newFetchedData = res['body'];
-          console.log(res);
-          this.AmCharts.updateChart(this.pieChart1, () => {
-              // Change whatever properties you want
-              this.pieChart1.dataProvider = newFetchedData;
-          });
-
-      });
-  }
-
-
     drawSecondPieChartData () {
         this.resultService.getSecondPieChartData(this.jobId).subscribe(res => {
-            var newFetchedData = res['body'];
-            if (newFetchedData.length > 0) {
-                this.pieChart2Loaded = true;
-                this.pieChartConfig2.legend['valueFunction'] = function (dataItem, label) {
-                    let str = '';
-                    const percent = dataItem.percents.toFixed(2);
-                    if (percent === 0 || percent === '0.00') {
-                        str += ' (<0.01%)';
-                    } else {
-                        str += ' (' + percent + '%)';
-                    }
-                    return str;
-                };
-                this.pieChart2 = this.AmCharts.makeChart('piediv2', this.pieChartConfig2);
-            }
+            var newFetchedData = res['body']['sentimentArray'];
+            this.pieChart2Loaded = true;
+            this.pieChartConfig2.legend['valueFunction'] = function (dataItem, label) {
+                let str = '';
+                const percent = dataItem.percents.toFixed(2);
+                if (percent === 0 || percent === '0.00') {
+                    str += ' (<0.01%)';
+                } else {
+                    str += ' (' + percent + '%)';
+                }
+                return str;
+            };
+            this.pieChart2 = this.AmCharts.makeChart('piediv2', this.pieChartConfig2);
+            // if (newFetchedData.length > 0) {
+            //
+            // }
         });
 
     }
 
+    drawThirdPieChartData () {
+        this.resultService.getThirdPieChartData(this.jobId).subscribe(res => {
+            var newFetchedData = res['body'];
+            this.pieChart3Loaded = true;
+            this.pieChartConfig3.legend['valueFunction'] = function (dataItem, label) {
+                let str = '';
+                const percent = dataItem.percents.toFixed(2);
+                if (percent === 0 || percent === '0.00') {
+                    str += ' (<0.01%)';
+                } else {
+                    str += ' (' + percent + '%)';
+                }
+                return str;
+            };
+            this.pieChart3 = this.AmCharts.makeChart('piediv3', this.pieChartConfig3);
+            // if (newFetchedData.length > 0) {
+            //
+            // }
+        });
+
+    }
+
+    redrawFirstPieChart() {
+        this.resultService.getFirstPieChartData(this.jobId).subscribe(res => {
+            let newFetchedData = res['body']['sentimentArray'];
+            if (newFetchedData.length > 0) {
+                this.pieChart1Loaded = true;
+            }
+            console.log(res);
+            if (this.pieChart1) {
+                this.AmCharts.updateChart(this.pieChart1, () => {
+                    // Change whatever properties you want
+                    this.pieChart1.dataProvider = newFetchedData;
+                });
+            }
+        });
+    }
+
     redrawSecondPieChart() {
         this.resultService.getSecondPieChartData(this.jobId).subscribe(res => {
-            let newFetchedData = res['body'];
+            let newFetchedDataSecondSet = res['body']['sentimentArray'];
             this.AmCharts.updateChart(this.pieChart2, () => {
                 // Change whatever properties you want
-                this.pieChart2.dataProvider = newFetchedData;
+                this.pieChart2.dataProvider = newFetchedDataSecondSet;
+            });
+
+        });
+    }
+
+    redrawThirdPieChart() {
+        this.resultService.getThirdPieChartData(this.jobId).subscribe(res => {
+            let newFetchedDataThirdSet = res['body'];
+            // if ()
+            this.AmCharts.updateChart(this.pieChart3, () => {
+                // Change whatever properties you want
+                this.pieChart3.dataProvider = newFetchedDataThirdSet;
             });
 
         });
@@ -940,15 +1073,20 @@ export class ResultComponent implements OnInit, OnDestroy {
 
 
     ngOnDestroy() {
-        clearInterval(this.refreshIntervalId);
+
+        clearInterval(this.refreshIntervalPie);
+        clearInterval(this.refreshIntervalBar);
         if (this.pieChart1) {
             this.pieChart1.clear();
         }
         if (this.pieChart2) {
             this.pieChart2.clear();
         }
+        if (this.pieChart3) {
+            this.pieChart3.clear();
+        }
         if (this.barChart1) {
-            this.barChart1.clear();
+            this.barChart1 = null;
         }
     }
 
