@@ -50,7 +50,7 @@ export class ResultComponent implements OnInit, OnDestroy {
    reload: boolean;
    pieChart1Loaded =  false;
    pieChart2Loaded =  false;
-   barChart1Loaded = false;
+   barStackedChartLoaded = false;
    refreshIntervalId: any;
 
    pieChartDataSet1 = [
@@ -213,7 +213,7 @@ export class ResultComponent implements OnInit, OnDestroy {
 
       // BAR charts DUMMY
 
-      this.testAm4();
+      // this.testAm4();
 
       // this.setStockChart();
 
@@ -225,7 +225,7 @@ export class ResultComponent implements OnInit, OnDestroy {
 
 
 
-       // main functinality
+       // MAIN FUNCTIONALITY
 
       // this.drawAllPieCharts();
       //
@@ -233,9 +233,70 @@ export class ResultComponent implements OnInit, OnDestroy {
       //     this.reDrawAllCharts();
       // }, 10000);
 
-
+    this.drawStackBarChart();
 
   }
+
+    drawStackBarChart() {
+        this.resultService.getStackBarChartData(this.jobId).subscribe(res => {
+            //draw bar charts
+            let chart = am4core.create("bardiv1", am4charts.XYChart);
+
+            chart.data = res['body'];
+            if (res['body'].length > 0) {
+                this.barStackedChartLoaded = true;
+                chart.legend = new am4charts.Legend();
+                chart.legend.position = "right";
+
+// Create axes
+                var categoryAxis = chart.yAxes.push(new am4charts.CategoryAxis());
+                categoryAxis.dataFields.category = "followersCount";
+                categoryAxis.renderer.grid.template.opacity = 0;
+
+
+                var valueAxis = chart.xAxes.push(new am4charts.ValueAxis());
+                valueAxis.min = 0;
+                valueAxis.renderer.grid.template.opacity = 0;
+                valueAxis.renderer.ticks.template.strokeOpacity = 0.5;
+                valueAxis.renderer.ticks.template.stroke = am4core.color("#495C43");
+                valueAxis.renderer.ticks.template.length = 10;
+                valueAxis.renderer.line.strokeOpacity = 0.5;
+                valueAxis.renderer.baseGrid.disabled = true;
+                valueAxis.renderer.minGridDistance = 40;
+                valueAxis.calculateTotals = true;
+
+// Create series
+                // @ts-ignore
+                function createSeries(field, name, color) {
+                    var series = chart.series.push(new am4charts.ColumnSeries());
+                    series.dataFields.valueX = field;
+                    series.dataFields.categoryY = "followersCount";
+                    series.stacked = true;
+                    series.name = name;
+                    series.dataFields.valueYShow = "totalPercent";
+                    series.columns.template.tooltipText =
+                        "{name}: {valueX.totalPercent.formatNumber('#.00')}%";
+                    series.columns.template.fill = color;
+                    // @ts-ignore
+                    series.columns.template.stroke = "#ff5ea0";
+
+                    var labelBullet = series.bullets.push(new am4charts.LabelBullet());
+                    labelBullet.locationX = 0.5;
+                    labelBullet.label.text = "{valueX.formatNumber('#.00')}";
+                    labelBullet.label.fill = am4core.color("#fff");
+                    // labelBullet.label.text = "{valueY.totalPercent.formatNumber('#.00')}%";
+                }
+
+                createSeries("positive", "Positive","#70ad47");
+                createSeries("negative", "Negative", "#f5422e");
+                createSeries("mixed", "Mixed", "#ffc000");
+
+                chart.scrollbarY = new am4core.Scrollbar();
+
+            }
+
+        })
+    }
 
   drawAllPieCharts() {
         this.drawFirstPieChartData();
@@ -243,140 +304,11 @@ export class ResultComponent implements OnInit, OnDestroy {
   }
 
   reDrawAllCharts() {
-        // this.redrawFirstPieChart();
-        // this.redrawSecondPieChart();
+        this.redrawFirstPieChart();
+        this.redrawSecondPieChart();
   }
 
 
-
-  testAm4() {
-
-        setTimeout(() => {
-            this.barChart1Loaded = true;
-                chart.validateData();
-        }, 3000);
-       // this.barChart1Loaded = true;
-      // Create chart instance
-      let chart = am4core.create("bardiv1", am4charts.XYChart);
-      let dupData =   [
-          {
-              "followersCount": "500-1000",
-              "positive": "0.03620039718225598",
-              "negative": "5.915166693739593E-4",
-              "mixed": "9.349303727503866E-4"
-          },
-          {
-              "followersCount": "5k-20k",
-              "positive": "0.8786949515342712",
-              "negative": "2.9988877940922976E-4",
-              "mixed": "0.005021605174988508"
-          },
-          {
-              "followersCount": "0-50",
-              "positive": "0.9382591843605042",
-              "negative": "0.004395967116579413",
-              "mixed": "0.010882709408178926"
-          },
-          {
-              "followersCount": "50-200",
-              "positive": "0.6667218068614602",
-              "negative": "0.5084130666218698",
-              "mixed": "0.21073180862003937"
-          },
-          {
-              "followersCount": "200-500",
-              "positive": "0.06209923420101404",
-              "negative": "0.5142109232256189",
-              "mixed": "0.13702206229208969"
-          }
-      ];
-
-// Add data
-      // Add data
-      chart.data = [{
-          "followersCount": "0-100",
-          "positive": 0.3,
-          "negative": 0.5,
-          "mixed": 0.2
-      }, {
-          "followersCount": "100-200",
-          "positive": 0.1,
-          "negative": 0.2,
-          "mixed": 0.7
-      }, {
-          "followersCount": "200-500",
-          "positive": 0.4,
-          "negative": 0.5,
-          "mixed": 0.1
-      }, {
-          "followersCount": "500-1000",
-          "positive": 0.6,
-          "negative": 0.3,
-          "mixed": 0.1
-      },{
-          "followersCount": "1000-2000",
-          "positive": 0.3,
-          "negative": 0.5,
-          "mixed": 0.2
-      }, {
-          "followersCount": "2000-20",
-          "positive": 0.1,
-          "negative": 0.2,
-          "mixed": 0.7
-      }];
-        chart.data = dupData;
-      chart.legend = new am4charts.Legend();
-      chart.legend.position = "right";
-
-// Create axes
-      var categoryAxis = chart.yAxes.push(new am4charts.CategoryAxis());
-      categoryAxis.dataFields.category = "followersCount";
-      categoryAxis.renderer.grid.template.opacity = 0;
-
-
-      var valueAxis = chart.xAxes.push(new am4charts.ValueAxis());
-      valueAxis.min = 0;
-      valueAxis.renderer.grid.template.opacity = 0;
-      valueAxis.renderer.ticks.template.strokeOpacity = 0.5;
-      valueAxis.renderer.ticks.template.stroke = am4core.color("#495C43");
-      valueAxis.renderer.ticks.template.length = 10;
-      valueAxis.renderer.line.strokeOpacity = 0.5;
-      valueAxis.renderer.baseGrid.disabled = true;
-      valueAxis.renderer.minGridDistance = 40;
-      valueAxis.calculateTotals = true;
-
-// Create series
-      function createSeries(field, name, color) {
-          var series = chart.series.push(new am4charts.ColumnSeries());
-          series.dataFields.valueX = field;
-          series.dataFields.categoryY = "followersCount";
-          series.stacked = true;
-          series.name = name;
-          series.dataFields.valueYShow = "totalPercent";
-          series.columns.template.configField = "color";
-          series.columns.template.tooltipText =
-              "{name}: {valueX.totalPercent.formatNumber('#.00')}%";
-          // series.columns.template.configField = color;
-          // series.slices.template.fill = color;
-
-          var labelBullet = series.bullets.push(new am4charts.LabelBullet());
-          labelBullet.locationX = 0.5;
-          labelBullet.label.text = "{valueX.formatNumber('#.00')}";
-          labelBullet.label.fill = am4core.color("#fff");
-          // labelBullet.label.text = "{valueY.totalPercent.formatNumber('#.00')}%";
-      }
-
-      createSeries("positive", "Positive","#b1ff90");
-      createSeries("negative", "Negative", "#9872ff");
-      createSeries("mixed", "Mixed", "#ff47ae");
-
-      chart.scrollbarY = new am4core.Scrollbar();
-      // setTimeout(() => {
-      //     chart.data = dupData;
-      //     chart.validateData();
-      // }, 10000);
-
-  }
 
     drawFirstPieChartData () {
      this.resultService.getFirstPieChartData(this.jobId).subscribe(res => {
@@ -444,13 +376,137 @@ export class ResultComponent implements OnInit, OnDestroy {
         });
     }
 
-  fetchSecondPieChartData () {
-        this.resultService.getFirstPieChartData(this.jobId).subscribe(res => {
+    testAm4() {
 
-        });
+        setTimeout(() => {
+            this.barStackedChartLoaded = true;
+            chart.validateData();
+        }, 3000);
+        // this.barStackedChartLoaded = true;
+        // Create chart instance
+        let chart = am4core.create("bardiv1", am4charts.XYChart);
+        let dupData =   [
+            {
+                "followersCount": "500-1000",
+                "positive": "0.03620039718225598",
+                "negative": "5.915166693739593E-4",
+                "mixed": "9.349303727503866E-4"
+            },
+            {
+                "followersCount": "5k-20k",
+                "positive": "0.8786949515342712",
+                "negative": "2.9988877940922976E-4",
+                "mixed": "0.005021605174988508"
+            },
+            {
+                "followersCount": "0-50",
+                "positive": "0.9382591843605042",
+                "negative": "0.004395967116579413",
+                "mixed": "0.010882709408178926"
+            },
+            {
+                "followersCount": "50-200",
+                "positive": "0.6667218068614602",
+                "negative": "0.5084130666218698",
+                "mixed": "0.21073180862003937"
+            },
+            {
+                "followersCount": "200-500",
+                "positive": "0.06209923420101404",
+                "negative": "0.5142109232256189",
+                "mixed": "0.13702206229208969"
+            }
+        ];
+
+// Add data
+        // Add data
+        chart.data = [{
+            "followersCount": "0-100",
+            "positive": 0.3,
+            "negative": 0.5,
+            "mixed": 0.2
+        }, {
+            "followersCount": "100-200",
+            "positive": 0.1,
+            "negative": 0.2,
+            "mixed": 0.7
+        }, {
+            "followersCount": "200-500",
+            "positive": 0.4,
+            "negative": 0.5,
+            "mixed": 0.1
+        }, {
+            "followersCount": "500-1000",
+            "positive": 0.6,
+            "negative": 0.3,
+            "mixed": 0.1
+        },{
+            "followersCount": "1000-2000",
+            "positive": 0.3,
+            "negative": 0.5,
+            "mixed": 0.2
+        }, {
+            "followersCount": "2000-20",
+            "positive": 0.1,
+            "negative": 0.2,
+            "mixed": 0.7
+        }];
+        chart.data = dupData;
+        chart.legend = new am4charts.Legend();
+        chart.legend.position = "right";
+
+// Create axes
+        var categoryAxis = chart.yAxes.push(new am4charts.CategoryAxis());
+        categoryAxis.dataFields.category = "followersCount";
+        categoryAxis.renderer.grid.template.opacity = 0;
+
+
+        var valueAxis = chart.xAxes.push(new am4charts.ValueAxis());
+        valueAxis.min = 0;
+        valueAxis.renderer.grid.template.opacity = 0;
+        valueAxis.renderer.ticks.template.strokeOpacity = 0.5;
+        valueAxis.renderer.ticks.template.stroke = am4core.color("#495C43");
+        valueAxis.renderer.ticks.template.length = 10;
+        valueAxis.renderer.line.strokeOpacity = 0.5;
+        valueAxis.renderer.baseGrid.disabled = true;
+        valueAxis.renderer.minGridDistance = 40;
+        valueAxis.calculateTotals = true;
+
+// Create series
+        function createSeries(field, name, color) {
+            var series = chart.series.push(new am4charts.ColumnSeries());
+            series.dataFields.valueX = field;
+            series.dataFields.categoryY = "followersCount";
+            series.stacked = true;
+            series.name = name;
+            series.dataFields.valueYShow = "totalPercent";
+            series.columns.template.tooltipText =
+                "{name}: {valueX.totalPercent.formatNumber('#.00')}%";
+            series.columns.template.fill = color;
+            // @ts-ignore
+            series.columns.template.stroke = "#ff5ea0";
+
+            var labelBullet = series.bullets.push(new am4charts.LabelBullet());
+            labelBullet.locationX = 0.5;
+            labelBullet.label.text = "{valueX.formatNumber('#.00')}";
+            labelBullet.label.fill = am4core.color("#fff");
+            // labelBullet.label.text = "{valueY.totalPercent.formatNumber('#.00')}%";
+        }
+
+        createSeries("positive", "Positive","#70ad47");
+        createSeries("negative", "Negative", "#f5422e");
+        createSeries("mixed", "Mixed", "#ffc000");
+
+        chart.scrollbarY = new am4core.Scrollbar();
+        // setTimeout(() => {
+        //     chart.data = dupData;
+        //     chart.validateData();
+        // }, 10000);
+
     }
 
-  drawStockCharts() {
+
+    drawStockCharts() {
 
       this.generateChartDataStatic();
 

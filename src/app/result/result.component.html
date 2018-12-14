@@ -51,11 +51,13 @@
 
     <div class="row">
         <div class="col-sm-12 " >
-            <div [style.display]="(barChart1Loaded)?'inherit': 'none' "  class="block_style1_bar ">
+            <div [style.display]="(barStackedChartLoaded)?'inherit': 'none' " class="block_style1_bar ">
+                <h5 class="pie-chart-heading">Sentiment Based on number of followers <i class="fa fa-twitter-square" aria-hidden="true"></i>
+                </h5>
                 <div id="bardiv1"></div>
             </div>
-            <div  *ngIf="!barChart1Loaded" class=" block_style1_bar">
-                <h5 class="pie-chart-heading">Analysis for Verified Accounts</h5>
+            <div *ngIf="!barStackedChartLoaded" class=" block_style1_bar">
+                <h5 class="pie-chart-heading">Sentiment Based on number of followers </h5>
                 <div class="response-loading-div">
                     <img src="assets/loading.gif" alt="Loading...">
                     <span>ANALYSING</span>
