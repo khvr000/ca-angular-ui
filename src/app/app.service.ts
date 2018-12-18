@@ -9,7 +9,7 @@ import {saveJobModel} from "./_models/saveJobModel";
 export class AppService {
   url = 'https://id6arpcbo3.execute-api.us-east-1.amazonaws.com/first/testapp';
 
-  newPostCalltestUrl = 'http://13.233.124.213:5000/checkpost';
+  newPostCalltestUrl = 'http://13.233.107.214:5000/checkpost';
   saveJobIdUrl = 'https://8nv3z5xrj7.execute-api.ap-south-1.amazonaws.com/stage01/ca/savejobid';
   randURl = 'https://id6arpcbo3.execute-api.us-east-1.amazonaws.com/first/testapp';
   getJobIdsUrl = 'https://8nv3z5xrj7.execute-api.ap-south-1.amazonaws.com/stage01/ca/getjobids'
